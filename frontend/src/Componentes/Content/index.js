@@ -1,6 +1,6 @@
 import React from "react";
-import "./Home.css";
-function Home() {
+import "./content.css";
+function Content() {
   return (
     <div className="content">
       <table class="table">
@@ -35,4 +35,4 @@ function Home() {
     </div>
   );
 }
-export default Home;
+export default Content;
