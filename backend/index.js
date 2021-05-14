@@ -66,7 +66,7 @@ app.post("/api/financeiro", (req, res) => {
 });
 
 app.get("/api/pessoas", (req, res) => {
-  const sqlSelect = "SELECT * FROM pessoas ORDER BY dataDeCadastro desc";
+  const sqlSelect = "SELECT * FROM pessoas ORDER BY id ";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });

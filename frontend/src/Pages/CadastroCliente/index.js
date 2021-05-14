@@ -4,6 +4,7 @@ import Axios from "axios";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
+import InputMask from "react-input-mask";
 function CadastroCliente() {
   const [nome, setNome] = useState("");
   const [cnpj_cpf, setCnpj_cpf] = useState("");
@@ -55,23 +56,27 @@ function CadastroCliente() {
       <Menu />
 
       <div className="content">
-        <div className="row formulario">
-          <div className="col-2">
+        <form className="form-floating formulario">
+          <div className="column">
             <label>CPF/CNPJ</label>
-            <input
+            <InputMask
+              mask="999.999.999-99"
               type="text"
               className="form-control "
               onChange={e => setCnpj_cpf(e.target.value)}
             />
+
             <label>Nome</label>
             <input
               type="text"
               className="form-control "
               onChange={e => setNome(e.target.value)}
             />
+          </div>
+          <div className="column">
             <label>Tipo de pessoas</label>
             <select
-              class="form-control"
+              className="form-control"
               onChange={e => setTipo_pessoa(e.target.value)}
               aria-label="Default select example"
             >
@@ -79,45 +84,51 @@ function CadastroCliente() {
               <option value="fisica">Pessoa Física</option>
               <option value="juridica">Pessoa juridica</option>
             </select>
-          </div>
 
-          <div className="col-2">
             <label>Email</label>
             <input
               type="email"
               className="form-control"
               onChange={e => setEmail(e.target.value)}
             />
+          </div>
+          <div className="column">
             <label>Contato</label>
-            <input
+            <InputMask
+              mask="(99)99999-9999"
               type="tel"
               className="form-control"
               onChange={e => setContato(e.target.value)}
             />
+            <label>CEP</label>
+            <InputMask
+              mask="99999-999"
+              type="text"
+              className="form-control"
+              onChange={e => setCep(e.target.value)}
+            />
           </div>
-          <label>CEP</label>
-          <input
-            type="number"
-            className="form-control"
-            onChange={e => setCep(e.target.value)}
-          />
-          <label>Bairro</label>
-          <input
-            type="text"
-            className="form-control"
-            onChange={e => setBairro(e.target.value)}
-          />
-          <label>Número</label>
-          <input
-            type="number"
-            className="form-control"
-            onChange={e => setNumero(e.target.value)}
-          />
+          <div className="column">
+            <label>Bairro</label>
+            <input
+              type="text"
+              className="form-control"
+              onChange={e => setBairro(e.target.value)}
+            />
+
+            <label>Número</label>
+            <input
+              type="number"
+              className="form-control"
+              onChange={e => setNumero(e.target.value)}
+            />
+          </div>
 
           <div className="button-cadastrar">
             <button onClick={cadastrar}>Cadastrar</button>
           </div>
-        </div>
+        </form>
+
         <div className="table-responsive" id="sailorTableArea">
           <table
             id="sailorTable"
@@ -154,6 +165,7 @@ function CadastroCliente() {
           </table>
         </div>
       </div>
+
       <Footer />
     </div>
   );

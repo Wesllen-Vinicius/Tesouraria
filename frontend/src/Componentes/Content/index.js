@@ -3,7 +3,7 @@ import "./content.css";
 function Content() {
   return (
     <div className="content">
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>

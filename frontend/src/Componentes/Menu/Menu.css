@@ -8,6 +8,18 @@
 
 .links-navegacao a {
   color: white;
-  padding-top: 10px;
-  font-size: 15px;
+  font-size: 17px;
+  text-decoration: none;
+}
+.links-navegacao{
+  padding: 10px;
+}
+.links-navegacao:hover{
+  background-color:aquamarine;
+  transition: all 0.3s;
+} 
+.links-navegacao svg{
+margin: 0;
+padding: 0;
+
 }

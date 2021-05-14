@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./CadastroTitulo.css";
 import Axios from "axios";
-
+import InputMask from "react-input-mask";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
+import InputMasked from "react-input-mask";
 function CadastroTitulo() {
   const [valor, setValor] = useState("");
   const [tipo_conta, setTipo_conta] = useState("");
@@ -44,39 +45,44 @@ function CadastroTitulo() {
       <Header />
       <Menu />
       <div className="content">
-        <form class="form-floating formulario">
-          <label>Tipo da conta</label>
-          <select
-            class="form-control"
-            onChange={e => setTipo_conta(e.target.value)}
-            aria-label="Default select example"
-          >
-            <option selected>Tipo de Conta</option>
-            <option value="pagar">A pagar</option>
-            <option value="receber">A receber</option>
-          </select>
-          <label>Valor</label>
-          <input
-            type="text"
-            class="form-control is-invalid"
-            onChange={e => setValor(e.target.value)}
-          />
-          <label>Codigo conta</label>
-          <input
-            type="text"
-            class="form-control is-invalid"
-            onChange={e => setCod_pessoa(e.target.value)}
-          />
-          <label>Vencimento</label>
-          <input
-            type="date"
-            class="form-control is-invalid"
-            onChange={e => setVencimento(e.target.value)}
-          />
+        <form className="form-floating formulario">
+          <div className="column">
+            <label>Tipo da conta</label>
+            <select
+              className="form-control"
+              onChange={e => setTipo_conta(e.target.value)}
+              aria-label="Default select example"
+            >
+              <option selected>Tipo de Conta</option>
+              <option value="pagar">A pagar</option>
+              <option value="receber">A receber</option>
+            </select>
+
+            <label>Valor</label>
+            <input
+              type="text"
+              className="form-control "
+              onChange={e => setValor(e.target.value)}
+            />
+          </div>
+          <div className="column">
+            <label>Codigo conta</label>
+            <input
+              type="text"
+              className="form-control is-invalid"
+              onChange={e => setCod_pessoa(e.target.value)}
+            />
+            <label>Vencimento</label>
+            <input
+              type="date"
+              className="form-control is-invalid"
+              onChange={e => setVencimento(e.target.value)}
+            />
+          </div>
           <label>Pagamento</label>
           <input
             type="date"
-            class="form-control is-invalid"
+            className="form-control is-invalid"
             onChange={e => setPagamento(e.target.value)}
           />
 
@@ -110,7 +116,7 @@ function CadastroTitulo() {
                     <td>{val.cod_conta}</td>
                     <td>{val.tipo_conta}</td>
                     <td>{val.cod_pessoa}</td>
-                    <td>{val.valor_titulo}</td>
+                    <td>{val.valor_titulo},00</td>
                     <td>{val.data_vencimento}</td>
                     <td>{val.data_pagamento}</td>
                   </tr>
