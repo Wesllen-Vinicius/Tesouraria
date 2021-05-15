@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./CadastroTitulo.css";
 import Axios from "axios";
-import InputMask from "react-input-mask";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
-import InputMasked from "react-input-mask";
+
 function CadastroTitulo() {
   const [valor, setValor] = useState("");
   const [tipo_conta, setTipo_conta] = useState("");

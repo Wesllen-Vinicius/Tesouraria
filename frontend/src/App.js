@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "../src/Pages/Home";
 import CadastroCliente from "../src/Pages/CadastroCliente/index";
 import CadastroTitulo from "../src/Pages/CadastroTitulo/index";
+import Relatorios from "../src/Pages/Relatorios/index";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Route exact path="/" component={Home} />
       <Route exact path="/CadastroCliente" component={CadastroCliente} />
       <Route exact path="/CadastroTitulo" component={CadastroTitulo} />
+      <Route exact path="/Relatorios" component={Relatorios} />
     </Router>
   );
 }

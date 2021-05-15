@@ -1,7 +1,17 @@
 .header {
     grid-area: header;
-    background: linear-gradient(to right, #1e469a, #49a7c1);
+    background: linear-gradient(to left,#483D8B, #1e469a);
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
+    border-bottom: 1px solid lightgray;
+    color: white;
+    font-size: 40px;
+  
+    
+    
+
 }
+.logo{
+   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding-left: 20px;}

@@ -1,6 +1,9 @@
-sk.formulario {
+.formulario {
   padding: 10px;
   flex-direction: row;
+  border: 1px solid lightgray;
+  margin-bottom: 10px;
+  
 }
 
 #sailorTableArea {
