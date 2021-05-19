@@ -10,6 +10,7 @@ exports.up = function (knex) {
     table.string("contato", 20).notNull().unique();
     table.string("email", 150).notNull().unique();
     table.string("dataDeCadastro").notNull();
+    table.string("tipo_cliente").notNull();
   });
 };
 

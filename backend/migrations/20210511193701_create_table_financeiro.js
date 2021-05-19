@@ -5,7 +5,9 @@ exports.up = function (knex) {
     table.decimal("valor_titulo", 20).notNull();
     table.date("data_vencimento").notNull();
     table.date("data_pagamento").notNull();
-    table.integer("cod_pessoa").unsigned().references("id").inTable("pessoas");
+    table.string("tipo_despesas").notNull();
+    table.string("quant_parcelas");
+    table.string("cod_pessoa", 50).references("cnpj_cpf").inTable("pessoas");
   });
 };
 

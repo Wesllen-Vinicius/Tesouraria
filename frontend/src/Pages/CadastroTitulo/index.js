@@ -4,6 +4,7 @@ import Axios from "axios";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
+import InputMask from "react-input-mask";
 
 function CadastroTitulo() {
   const [valor, setValor] = useState("");
@@ -11,7 +12,11 @@ function CadastroTitulo() {
   const [vencimento, setVencimento] = useState("");
   const [pagamento, setPagamento] = useState("");
   const [cod_pessoa, setCod_pessoa] = useState("");
+  const [quant_parcelas, setParcelas] = useState("");
+  const [tipo_despesas, setTipo_despesas] = useState("");
   const [listtitulos, setListTitulos] = useState([]);
+
+  const valorFormatado = parseFloat(valor).toFixed(2);
 
   useEffect(() => {
     Axios.get("http://localhost:3001/api/financeiro").then(response => {
@@ -30,7 +35,9 @@ function CadastroTitulo() {
     } else {
       Axios.post("http://localhost:3001/api/financeiro", {
         tipo_conta: tipo_conta,
+        tipo_despesas: tipo_despesas,
         data_pagamento: pagamento,
+        quant_parcelas: quant_parcelas,
         valor_titulo: valor,
         data_vencimento: vencimento,
         cod_pessoa: cod_pessoa,
@@ -65,23 +72,60 @@ function CadastroTitulo() {
             />
           </div>
           <div className="column">
-            <label>Codigo conta</label>
+            <label>Parcelas</label>
+            <select
+              className="form-control"
+              onChange={e => setParcelas(e.target.value)}
+              aria-label="Default select example"
+            >
+              <option select value="1x">
+                1x R$ {valorFormatado}
+              </option>
+              <option value="2x">2x R$ {valorFormatado / 2}</option>
+              <option value="3x">3x R$ {valorFormatado / 3}</option>
+              <option value="4x">4x R$ {valorFormatado / 4}</option>
+              <option value="5x">5x R$ {valorFormatado / 5}</option>
+              <option value="6x">6x R$ {valorFormatado / 6}</option>
+              <option value="7x">7x R$ {valorFormatado / 7}</option>
+              <option value="8x">8x R$ {valorFormatado / 8}</option>
+              <option value="9x">9x R$ {valorFormatado / 9}</option>
+              <option value="10x">10x R$ {valorFormatado / 10}</option>
+              <option value="11x">11x R$ {valorFormatado / 11}</option>
+              <option value="12x">12x R$ {valorFormatado / 12}</option>
+            </select>
+
+            <label>Tipo despesas</label>
+            <select
+              className="form-control"
+              onChange={e => setTipo_despesas(e.target.value)}
+              aria-label="Default select example"
+            >
+              <option selected>Tipo despesas</option>
+              <option value="Consumo">Consumo</option>
+              <option value="Revenda">Revenda</option>
+              <option value="Patrimonio">Patrimonio</option>
+            </select>
+          </div>
+          <div className="column">
+            <label>Codigo da pessoa</label>
             <input
               type="text"
-              className="form-control is-invalid"
+              className="form-control "
               onChange={e => setCod_pessoa(e.target.value)}
             />
             <label>Vencimento</label>
-            <input
-              type="date"
-              className="form-control is-invalid"
+            <InputMask
+              mask="99/99/9999"
+              type="text"
+              className="form-control "
               onChange={e => setVencimento(e.target.value)}
             />
           </div>
           <label>Pagamento</label>
-          <input
-            type="date"
-            className="form-control is-invalid"
+          <InputMask
+            mask="99/99/9999"
+            type="text"
+            className="form-control"
             onChange={e => setPagamento(e.target.value)}
           />
 
@@ -99,10 +143,12 @@ function CadastroTitulo() {
           >
             <thead>
               <tr>
-                <th>Id</th>
-                <th>Tipo da conta</th>
-                <th>Codigo da conta</th>
+                <th className="tableId">Id</th>
+                <th className="tableTipoConta">Tipo da conta</th>
+                <th className="tableCpfCnpj">Codigo da conta</th>
+                <th className="tableTipoDespesa">Tipo de despesa</th>
                 <th>Valor Titulo</th>
+                <th>Quantidade parcelas</th>
                 <th>Vencimento</th>
                 <th>Pagamento</th>
               </tr>
@@ -112,10 +158,12 @@ function CadastroTitulo() {
               return (
                 <tbody>
                   <tr>
-                    <td>{val.cod_conta}</td>
-                    <td>{val.tipo_conta}</td>
-                    <td>{val.cod_pessoa}</td>
-                    <td>{val.valor_titulo},00</td>
+                    <td className="tableId">{val.cod_conta}</td>
+                    <td className="tableTipoConta">{val.tipo_conta}</td>
+                    <td className="tableCpfCnpj">{val.cod_pessoa}</td>
+                    <td className="tableTipoDespesa">{val.tipo_despesas}</td>
+                    <td>R$ {val.valor_titulo.toFixed(2)}</td>
+                    <td>{val.quant_parcelas}</td>
                     <td>{val.data_vencimento}</td>
                     <td>{val.data_pagamento}</td>
                   </tr>
