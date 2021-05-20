@@ -12,7 +12,7 @@ function CadastroTitulo() {
   const [vencimento, setVencimento] = useState("");
   const [pagamento, setPagamento] = useState("");
   const [cod_pessoa, setCod_pessoa] = useState("");
-  const [Parcelas, setParcelas] = useState("");
+  const [quant_parcelas, setParcelas] = useState("");
   const [tipo_despesas, setTipo_despesas] = useState("");
   const [listtitulos, setListTitulos] = useState([]);
 
@@ -22,7 +22,7 @@ function CadastroTitulo() {
     Axios.get("http://localhost:3001/api/financeiro").then(response => {
       setListTitulos(response.data);
     });
-  }, []);
+  },[]);
 
   const cadastrar = () => {
     if (
@@ -37,7 +37,7 @@ function CadastroTitulo() {
         tipo_conta: tipo_conta,
         tipo_despesas: tipo_despesas,
         data_pagamento: pagamento,
-        quant_parcelas: Parcelas,
+        quant_parcelas: quant_parcelas,
         valor_titulo: valor,
         data_vencimento: vencimento,
         cod_pessoa: cod_pessoa,
@@ -76,11 +76,8 @@ function CadastroTitulo() {
             <select
               className="form-control"
               onChange={e => setParcelas(e.target.value)}
-              aria-label="Default select example"
             >
-              <option select value="1x">
-                1x R$ {valorFormatado}
-              </option>
+              <option value="1x">1x R$ {valorFormatado}</option>
               <option value="2x">2x R$ {valorFormatado / 2}</option>
               <option value="3x">3x R$ {valorFormatado / 3}</option>
               <option value="4x">4x R$ {valorFormatado / 4}</option>
@@ -107,25 +104,23 @@ function CadastroTitulo() {
             </select>
           </div>
           <div className="column">
-            <label>Codigo conta</label>
+            <label>Codigo da pessoa</label>
             <input
               type="text"
-              className="form-control is-invalid"
+              className="form-control "
               onChange={e => setCod_pessoa(e.target.value)}
             />
             <label>Vencimento</label>
             <InputMask
-              mask="99/99/9999"
               type="text"
-              className="form-control is-invalid"
+              className="form-control "
               onChange={e => setVencimento(e.target.value)}
             />
           </div>
           <label>Pagamento</label>
           <InputMask
-            mask="99/99/9999"
             type="text"
-            className="form-control is-invalid"
+            className="form-control"
             onChange={e => setPagamento(e.target.value)}
           />
 
@@ -144,9 +139,9 @@ function CadastroTitulo() {
             <thead>
               <tr>
                 <th className="tableId">Id</th>
-                <th className="tableTipoConta">Tipo da conta</th>
-                <th className="tableCpfCnpj">Codigo da conta</th>
-                <th className="tableTipoDespesa">Tipo de despesa</th>
+                <th className="">Tipo da conta</th>
+                <th className="">Codigo da conta</th>
+                <th className="">Tipo de despesa</th>
                 <th>Valor Titulo</th>
                 <th>Quantidade parcelas</th>
                 <th>Vencimento</th>
@@ -155,13 +150,14 @@ function CadastroTitulo() {
             </thead>
 
             {listtitulos.map(val => {
+              const dataFormatada = new Date(val.data_pagamento);
               return (
                 <tbody>
                   <tr>
                     <td className="tableId">{val.cod_conta}</td>
-                    <td className="tableTipoConta">{val.tipo_conta}</td>
-                    <td className="tableCpfCnpj">{val.cod_pessoa}</td>
-                    <td className="tableTipoDespesa">{val.tipo_despesas}</td>
+                    <td className="">{val.tipo_conta}</td>
+                    <td className="">{val.cod_pessoa}</td>
+                    <td className="">{val.tipo_despesas}</td>
                     <td>R$ {val.valor_titulo.toFixed(2)}</td>
                     <td>{val.quant_parcelas}</td>
                     <td>{val.data_vencimento}</td>

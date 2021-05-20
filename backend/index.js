@@ -91,25 +91,51 @@ app.get("/api/financeiro", (req, res) => {
   });
 });
 
-app.get("/api/pessoas/update", (req, res) => {
+app.put("/api/update/pessoas", (req, res) => {
+  
+  const nome = req.body.nome;
+  const id = req.body.id
+
   const sqlUpdate =
-    "UPDATE pessoas SET tipo_pessoa, nome, cnpj_cpf, contato, email, bairro, cep, numero, tipo_cliente WHERE id";
+    "UPDATE pessoas SET  nome = ? WHERE id = ?";
+
   db.query(
-    sqlUpdate, [
-      tipo_pessoa,
+    sqlUpdate,
+    [
       nome,
-      cnpj_cpf,
-      contato,
-      email,
-      bairro,
-      cep,
-      numero,
-      tipo_cliente
+      id,
     ],
     (err, result) => {
-      res.send(result);
+      if (err) console.log(err);
     }
-  );
+  ).catch();
+});
+
+app.delete("/api/delete/pessoas/:id", (req, res) => {
+  const id = req.params.id;
+
+  const sqlDelete = "DELETE FROM pessoas where id = ?";
+  db.query(sqlDelete, id, (err, result) => {
+    console.log(err);
+  })
+});
+
+app.get("/api/relatorios/mensal", (req, res) => {
+  const mes = req.body.mesPesquisa;
+  const ano = req.body.anoMensal;
+  const sqlSelect =
+    "select * from financeiro where data_vencimento Like (?-?-%)";
+  db.query(sqlSelect, [mes, ano], (err, result) => {
+    res.send(result);
+  });
+});
+
+app.get("/api/relatorios", (req, res) => {
+  const sqlSelect =
+    "SELECT pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_despesas, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE financeiro.cod_pessoa = pessoas.cnpj_cpf";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
 });
 
 app.listen(3001, () => {
