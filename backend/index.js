@@ -91,18 +91,32 @@ app.get("/api/financeiro", (req, res) => {
   });
 });
 
-app.post("/api/update", (req, res) => {
-  const sqlUpdate =
-    "UPDATE pessoas SET tipo_pessoa, nome, cnpj_cpf, contato, email, bairro, cep, numero, tipo_cliente WHERE pessoas.id=cnp_cpf";
-  db.query(sqlUpdate, (err, result) => {
-    res.send(result);
+app.put("/api/update/pessoas", (req, res) => {
+  const id = req.body.id;
+  const nome = req.body.nome;
+
+  const sqlUpdate = "UPDATE pessoas SET  nome = ? WHERE id = ?";
+
+  db.query(sqlUpdate, [nome, id], (err, result) => {
+    if (err) console.log(err);
+  }).catch();
+});
+
+app.delete("/api/delete/pessoas/:id", (req, res) => {
+  const id = req.params.id;
+
+  const sqlDelete = "DELETE FROM pessoas where id = ?";
+  db.query(sqlDelete, id, (err, result) => {
+    console.log(err);
   });
 });
 
 app.get("/api/relatorios/mensal", (req, res) => {
+  const mes = req.body.mesPesquisa;
+  const ano = req.body.anoMensal;
   const sqlSelect =
-    "SELECT * FROM financeiro WHERE  data_vencimento, data_pagamento > (NOW() - INTERVAL 30 DAY)";
-  db.query(sqlSelect, (err, result) => {
+    "select * from financeiro where data_vencimento Like (?-?-%)";
+  db.query(sqlSelect, [mes, ano], (err, result) => {
     res.send(result);
   });
 });

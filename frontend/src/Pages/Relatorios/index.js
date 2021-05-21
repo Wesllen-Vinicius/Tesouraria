@@ -19,9 +19,15 @@ function Relatorios() {
   }, []);
 
   function Pesquisar() {
-    Axios.get("http://localhost:3001/api/relatorios/mensal").then(response => {
-      setRelatorio(response.data);
-    });
+    Axios.get("http://localhost:3001/api/relatorios/mensal", {
+      params: { mes: mesPesquisa, ano: anoMensal },
+    })
+      .then(response => {
+        setRelatorio(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   return (
     <div id="app">

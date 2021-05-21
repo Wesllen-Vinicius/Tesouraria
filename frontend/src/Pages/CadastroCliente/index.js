@@ -25,8 +25,16 @@ function CadastroCliente() {
     Axios.get("http://localhost:3001/api/pessoas").then(response => {
       setListPessoas(response.data);
     });
-  });
-
+  }, []);
+  const Deletar = id => {
+    Axios.delete(`http://localhost:3001/api/delete/pessoas/${id}`)
+      .then(() => {
+        alert("Conta excluida com sucesso");
+      })
+      .catch(erro => {
+        alert("ops! Usuario possui itens no financeiro Cadastrado!!");
+      });
+  };
   const cadastrar = () => {
     if (
       nome === "" ||
@@ -86,20 +94,42 @@ function CadastroCliente() {
               <option value="Fornecedor">Fornecedor</option>
             </select>
           </div>
-          <div className="column">
-            <label>CPF/CNPJ</label>
-            <input
-              type="text"
-              className="form-control "
-              onChange={e => setCnpj_cpf(e.target.value)}
-            />
-            <label>Nome</label>
-            <input
-              type="text"
-              className="form-control "
-              onChange={e => setNome(e.target.value)}
-            />
-          </div>
+          {tipo_pessoa === "fisica" ? (
+            <div className="column">
+              <label>CPF</label>
+              <InputMask
+                mask="999.999.999-99"
+                type="text"
+                className="form-control "
+                onChange={e => setCnpj_cpf(e.target.value)}
+              />
+
+              <label>Nome</label>
+              <input
+                type="text"
+                className="form-control "
+                onChange={e => setNome(e.target.value)}
+              />
+            </div>
+          ) : null}
+          {tipo_pessoa === "juridica" ? (
+            <div className="column">
+              <label>CNPJ</label>
+              <InputMask
+                mask="99.999.999/9999-99"
+                type="text"
+                className="form-control "
+                onChange={e => setCnpj_cpf(e.target.value)}
+              />
+
+              <label>Nome Fantasia</label>
+              <input
+                type="text"
+                className="form-control "
+                onChange={e => setNome(e.target.value)}
+              />
+            </div>
+          ) : null}
           <div className="column">
             <label>Contato</label>
             <InputMask
@@ -152,14 +182,14 @@ function CadastroCliente() {
             <thead>
               <tr>
                 <th className="tableId">ID</th>
-                <th className="tableCpfCnpj">CPF/CNPJ</th>
-                <th className="tableNome">Nome</th>
-                <th className="tableTipoCliente">Tipo Cliente</th>
-                <th className="tableEmail">Email</th>
-                <th className="tableCep">CEP</th>
+                <th className="">CPF/CNPJ</th>
+                <th className="">Nome</th>
+                <th className="">Tipo</th>
+                <th className="">Email</th>
+                <th className="">CEP</th>
                 <th>Contato</th>
                 <th>Data de Cadastro</th>
-                <th className="tableAcoes">Ações</th>
+                <th className="">Ações</th>
               </tr>
             </thead>
 
@@ -168,19 +198,24 @@ function CadastroCliente() {
                 return (
                   <tr key={index}>
                     <td className="tableId">{val.id}</td>
-                    <td className="tableCpfCnpj">{val.cnpj_cpf}</td>
-                    <td className="tableNome">{val.nome}</td>
-                    <td className="tableTipoCliente">{val.tipo_cliente}</td>
-                    <td className="tableEmail">{val.email}</td>
-                    <td className="tableCep">{val.cep}</td>
+                    <td className="">{val.cnpj_cpf}</td>
+                    <td className="">{val.nome}</td>
+                    <td className="">{val.tipo_cliente}</td>
+                    <td className="">{val.email}</td>
+                    <td className="">{val.cep}</td>
                     <td>{val.contato}</td>
                     <td>{val.dataDeCadastro}</td>
-                    <th className="tableAcoes">
+                    <th className="">
                       <div>
-                        <Modale />
+                        <Modale id={val.id} />
                       </div>
                       <div>
-                        <button>
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            Deletar(val.id);
+                          }}
+                        >
                           <RiDeleteBinLine size={25} />
                         </button>
                       </div>

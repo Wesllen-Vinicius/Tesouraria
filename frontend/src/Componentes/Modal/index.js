@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { FaUserEdit } from "react-icons/fa";
 import InputMask from "react-input-mask";
 import Axios from "axios";
-function Modale() {
+function Modale(id) {
   const [show, setShow] = useState(false);
   const [nome, setNome] = useState("");
   const [cnpj_cpf, setCnpj_cpf] = useState("");
@@ -19,9 +19,25 @@ function Modale() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  Axios.get("http://localhost:3001/api/pessoas").then(response => {
-    setListPessoas(response.data);
-  });
+  useEffect(() => {
+    Axios.get("http://localhost:3001/api/pessoas").then(response => {
+      setListPessoas(response.data);
+    });
+  }, []);
+
+  const updatePessoas = id => {
+    Axios.put("http://localhost:3001/api/update/pessoas", {
+      nome: nome,
+      id: id,
+    })
+      .then(response => {
+        alert("Alterou");
+        setShow(false);
+      })
+      .catch(erro => {
+        console.log(erro);
+      });
+  };
 
   return (
     <>
@@ -38,7 +54,6 @@ function Modale() {
                   className="form-control"
                   aria-label="Default select example"
                   onChange={e => setTipo_pessoa(e.target.value)}
-                  value={val.tipo_pessoa}
                 >
                   <option selected>Tipo de Pessoa</option>
                   <option value="fisica">Pessoa Física</option>
@@ -48,6 +63,7 @@ function Modale() {
                 <select
                   className="form-control"
                   aria-label="Default select example"
+                  onChange={e => setTipo_cliente(e.target.value)}
                 >
                   <option selected>Tipo de Cliente</option>
                   <option value="Cliente">Cliente</option>
@@ -58,31 +74,30 @@ function Modale() {
                 <label>CPF/CNPJ</label>
                 <input
                   type="text"
-                  value={val.cnpj_cpf}
                   className="form-control "
+                  onChange={e => setCnpj_cpf(e.target.value)}
                 />
                 <label>Nome</label>
                 <input
                   type="text"
                   className="form-control "
-                  value={val.nome}
                   onChange={e => setNome(e.target.value)}
                 />
               </div>
               <div className="column mb-2">
                 <label>Contato</label>
                 <InputMask
-                  value={val.contato}
                   mask="(99)99999-9999"
                   type="tel"
                   className="form-control"
+                  onChange={e => setContato(e.target.value)}
                 />
                 <label>CEP</label>
                 <InputMask
                   mask="99999-999"
                   type="text"
                   className="form-control"
-                  value={val.cep}
+                  onChange={e => setCep(e.target.value)}
                 />
               </div>
               <div className="column mb-2">
@@ -90,30 +105,40 @@ function Modale() {
                 <input
                   type="text"
                   className="form-control"
-                  value={val.bairro}
+                  onChange={e => setBairro(e.target.value)}
                 />
 
                 <label>Número</label>
                 <input
                   type="number"
                   className="form-control"
-                  value={val.numero}
+                  onChange={e => setNumero(e.target.value)}
                 />
               </div>
               <label>Email</label>
-              <input type="email" className="form-control" value={val.email} />
+              <input
+                type="email"
+                className="form-control"
+                onChange={e => setEmail(e.target.value)}
+              />
             </Modal.Body>
             <Modal.Footer className="bg-info ">
               <Button variant="danger " onClick={handleClose}>
                 Cancelar
               </Button>
-              <Button variant="light" onClick={handleClose}>
+              <Button
+                variant="light"
+                onClick={() => {
+                  updatePessoas(val.id);
+                }}
+              >
                 Salvar
               </Button>
             </Modal.Footer>
           </Modal>
         );
       })}
+
       <Button variant="primary" onClick={handleShow}>
         <FaUserEdit />
       </Button>
