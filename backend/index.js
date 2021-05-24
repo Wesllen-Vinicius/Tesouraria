@@ -129,6 +129,8 @@ app.get("/api/relatorios", (req, res) => {
   });
 });
 
+app.post("/api/login", (req, res) => {});
+
 app.listen(3001, () => {
   console.log("Rodando na porta 3001");
 });

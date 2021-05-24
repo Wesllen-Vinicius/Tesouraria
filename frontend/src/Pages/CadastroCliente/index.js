@@ -72,101 +72,107 @@ function CadastroCliente() {
 
       <div className="content">
         <form className="form-floating formulario">
-          <div className="column">
-            <label>Tipo de pessoas</label>
-            <select
-              className="form-control"
-              onChange={e => setTipo_pessoa(e.target.value)}
-              aria-label="Default select example"
-            >
-              <option selected>Tipo de Pessoa</option>
-              <option value="fisica">Pessoa Física</option>
-              <option value="juridica">Pessoa juridica</option>
-            </select>
-            <label>Tipo de Cliente</label>
-            <select
-              className="form-control"
-              onChange={e => setTipo_cliente(e.target.value)}
-              aria-label="Default select example"
-            >
-              <option selected>Tipo de Cliente</option>
-              <option value="Cliente">Cliente</option>
-              <option value="Fornecedor">Fornecedor</option>
-            </select>
-          </div>
-          {tipo_pessoa === "fisica" ? (
-            <div className="column">
-              <label>CPF</label>
-              <InputMask
-                mask="999.999.999-99"
-                type="text"
-                className="form-control "
-                onChange={e => setCnpj_cpf(e.target.value)}
-              />
+          <div className="row">
+            <div className="col-6">
+              <label>Tipo de pessoas</label>
+              <select
+                className="form-control"
+                onChange={e => setTipo_pessoa(e.target.value)}
+                aria-label="Default select example"
+              >
+                <option selected>Tipo de Pessoa</option>
+                <option value="fisica">Pessoa Física</option>
+                <option value="juridica">Pessoa juridica</option>
+              </select>
+              <label>Tipo de Cliente</label>
+              <select
+                className="form-control"
+                onChange={e => setTipo_cliente(e.target.value)}
+                aria-label="Default select example"
+              >
+                <option selected>Tipo de Cliente</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Fornecedor">Fornecedor</option>
+              </select>
+            </div>
+            {tipo_pessoa === "fisica" ? (
+              <div className="col-6">
+                <label>CPF</label>
+                <InputMask
+                  mask="999.999.999-99"
+                  type="text"
+                  className="form-control "
+                  onChange={e => setCnpj_cpf(e.target.value)}
+                />
 
-              <label>Nome</label>
-              <input
+                <label>Nome</label>
+                <input
+                  type="text"
+                  className="form-control "
+                  onChange={e => setNome(e.target.value)}
+                />
+              </div>
+            ) : null}
+            {tipo_pessoa === "juridica" ? (
+              <div className="col-6">
+                <label>CNPJ</label>
+                <InputMask
+                  mask="99.999.999/9999-99"
+                  type="text"
+                  className="form-control "
+                  onChange={e => setCnpj_cpf(e.target.value)}
+                />
+
+                <label>Nome Fantasia</label>
+                <input
+                  type="text"
+                  className="form-control "
+                  onChange={e => setNome(e.target.value)}
+                />
+              </div>
+            ) : null}
+
+            <div className="col-6">
+              <label>CEP</label>
+              <InputMask
+                mask="99999-999"
                 type="text"
-                className="form-control "
-                onChange={e => setNome(e.target.value)}
+                className="form-control"
+                onChange={e => setCep(e.target.value)}
+              />
+              <label>Contato</label>
+              <InputMask
+                mask="(99)99999-9999"
+                type="tel"
+                className="form-control"
+                onChange={e => setContato(e.target.value)}
               />
             </div>
-          ) : null}
-          {tipo_pessoa === "juridica" ? (
-            <div className="column">
-              <label>CNPJ</label>
-              <InputMask
-                mask="99.999.999/9999-99"
-                type="text"
-                className="form-control "
-                onChange={e => setCnpj_cpf(e.target.value)}
-              />
-
-              <label>Nome Fantasia</label>
+            <div className="col-6">
+              <label>Bairro</label>
               <input
                 type="text"
-                className="form-control "
-                onChange={e => setNome(e.target.value)}
+                className="form-control"
+                onChange={e => setBairro(e.target.value)}
+              />
+
+              <label>Número</label>
+              <input
+                type="number"
+                className="form-control"
+                onChange={e => setNumero(e.target.value)}
               />
             </div>
-          ) : null}
-          <div className="column">
-            <label>Contato</label>
-            <InputMask
-              mask="(99)99999-9999"
-              type="tel"
-              className="form-control"
-              onChange={e => setContato(e.target.value)}
-            />
-            <label>CEP</label>
-            <InputMask
-              mask="99999-999"
-              type="text"
-              className="form-control"
-              onChange={e => setCep(e.target.value)}
-            />
-          </div>
-          <div className="column">
-            <label>Bairro</label>
-            <input
-              type="text"
-              className="form-control"
-              onChange={e => setBairro(e.target.value)}
-            />
 
-            <label>Número</label>
-            <input
-              type="number"
-              className="form-control"
-              onChange={e => setNumero(e.target.value)}
-            />
+            <div className="col-12">
+              <label>Email</label>
+              <input
+                type="email"
+                className="form-control"
+                onChange={e => setEmail(e.target.value)}
+              />
+            </div>
           </div>
-          <label>Email</label>
-          <input
-            type="email"
-            className="form-control"
-            onChange={e => setEmail(e.target.value)}
-          />
 
           <div className="button-cadastrar ">
             <button onClick={cadastrar}>Cadastrar</button>
