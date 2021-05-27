@@ -22,7 +22,7 @@ function CadastroTitulo() {
     Axios.get("http://localhost:3001/api/financeiro").then(response => {
       setListTitulos(response.data);
     });
-  },[]);
+  }, []);
 
   const cadastrar = () => {
     if (
@@ -52,77 +52,82 @@ function CadastroTitulo() {
       <Menu />
       <div className="content">
         <form className="form-floating formulario">
-          <div className="column">
-            <label>Tipo da conta</label>
-            <select
-              className="form-control"
-              onChange={e => setTipo_conta(e.target.value)}
-              aria-label="Default select example"
-            >
-              <option selected>Tipo de Conta</option>
-              <option value="pagar">A pagar</option>
-              <option value="receber">A receber</option>
-            </select>
+          <div className="row">
+            <div className="col-6">
+              <label>Tipo da conta</label>
+              <select
+                className="form-control"
+                onChange={e => setTipo_conta(e.target.value)}
+              >
+                <option selected>Tipo de Conta</option>
+                <option value="pagar">A pagar</option>
+                <option value="receber">A receber</option>
+              </select>
 
-            <label>Valor</label>
-            <input
-              type="text"
-              className="form-control "
-              onChange={e => setValor(e.target.value)}
-            />
-          </div>
-          <div className="column">
-            <label>Parcelas</label>
-            <select
-              className="form-control"
-              onChange={e => setParcelas(e.target.value)}
-            >
-              <option value="1x">1x R$ {valorFormatado}</option>
-              <option value="2x">2x R$ {valorFormatado / 2}</option>
-              <option value="3x">3x R$ {valorFormatado / 3}</option>
-              <option value="4x">4x R$ {valorFormatado / 4}</option>
-              <option value="5x">5x R$ {valorFormatado / 5}</option>
-              <option value="6x">6x R$ {valorFormatado / 6}</option>
-              <option value="7x">7x R$ {valorFormatado / 7}</option>
-              <option value="8x">8x R$ {valorFormatado / 8}</option>
-              <option value="9x">9x R$ {valorFormatado / 9}</option>
-              <option value="10x">10x R$ {valorFormatado / 10}</option>
-              <option value="11x">11x R$ {valorFormatado / 11}</option>
-              <option value="12x">12x R$ {valorFormatado / 12}</option>
-            </select>
+              <label>Valor</label>
+              <input
+                type="text"
+                className="form-control "
+                onChange={e => setValor(e.target.value)}
+              />
+            </div>
+            <div className="col-6">
+              <label>Parcelas</label>
+              <select
+                className="form-control"
+                onChange={e => setParcelas(e.target.value)}
+              >
+                <option value="1x">1x R$ {valorFormatado}</option>
+                <option value="2x">2x R$ {valorFormatado / 2}</option>
+                <option value="3x">3x R$ {valorFormatado / 3}</option>
+                <option value="4x">4x R$ {valorFormatado / 4}</option>
+                <option value="5x">5x R$ {valorFormatado / 5}</option>
+                <option value="6x">6x R$ {valorFormatado / 6}</option>
+                <option value="7x">7x R$ {valorFormatado / 7}</option>
+                <option value="8x">8x R$ {valorFormatado / 8}</option>
+                <option value="9x">9x R$ {valorFormatado / 9}</option>
+                <option value="10x">10x R$ {valorFormatado / 10}</option>
+                <option value="11x">11x R$ {valorFormatado / 11}</option>
+                <option value="12x">12x R$ {valorFormatado / 12}</option>
+              </select>
 
-            <label>Tipo despesas</label>
-            <select
-              className="form-control"
-              onChange={e => setTipo_despesas(e.target.value)}
-              aria-label="Default select example"
-            >
-              <option selected>Tipo despesas</option>
-              <option value="Consumo">Consumo</option>
-              <option value="Revenda">Revenda</option>
-              <option value="Patrimonio">Patrimonio</option>
-            </select>
+              <label>Tipo despesas</label>
+              <select
+                className="form-control"
+                onChange={e => setTipo_despesas(e.target.value)}
+              >
+                <option selected>Tipo despesas</option>
+                <option value="Consumo">Consumo</option>
+                <option value="Revenda">Revenda</option>
+                <option value="Patrimonio">Patrimonio</option>
+              </select>
+            </div>
+
+            <div className="col-6">
+              <label>Codigo da pessoa</label>
+              <input
+                type="text"
+                className="form-control "
+                onChange={e => setCod_pessoa(e.target.value)}
+              />
+            </div>
+            <div className="col-6">
+              <label>Vencimento</label>
+              <InputMask
+                type="text"
+                className="form-control "
+                onChange={e => setVencimento(e.target.value)}
+              />
+            </div>
+            <div className="col-12">
+              <label>Pagamento</label>
+              <InputMask
+                type="text"
+                className="form-control"
+                onChange={e => setPagamento(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="column">
-            <label>Codigo da pessoa</label>
-            <input
-              type="text"
-              className="form-control "
-              onChange={e => setCod_pessoa(e.target.value)}
-            />
-            <label>Vencimento</label>
-            <InputMask
-              type="text"
-              className="form-control "
-              onChange={e => setVencimento(e.target.value)}
-            />
-          </div>
-          <label>Pagamento</label>
-          <InputMask
-            type="text"
-            className="form-control"
-            onChange={e => setPagamento(e.target.value)}
-          />
 
           <div className="button-cadastrar">
             <button onClick={cadastrar} className="mt-2">
@@ -150,7 +155,6 @@ function CadastroTitulo() {
             </thead>
 
             {listtitulos.map(val => {
-              const dataFormatada = new Date(val.data_pagamento);
               return (
                 <tbody>
                   <tr>

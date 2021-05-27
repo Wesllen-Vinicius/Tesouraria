@@ -92,32 +92,22 @@ app.get("/api/financeiro", (req, res) => {
 });
 
 app.put("/api/update/pessoas", (req, res) => {
-  
+  const id = req.body.id;
   const nome = req.body.nome;
-  const id = req.body.id
 
-  const sqlUpdate =
-    "UPDATE pessoas SET  nome = ? WHERE id = ?";
+  const sqlUpdate = "UPDATE pessoas SET  nome = ? WHERE id = ?";
 
-  db.query(
-    sqlUpdate,
-    [
-      nome,
-      id,
-    ],
-    (err, result) => {
-      if (err) console.log(err);
-    }
-  ).catch();
+  db.query(sqlUpdate, [nome, id], (err, result) => {
+    if (err) console.log(err);
+  }).catch();
 });
 
-app.delete("/api/delete/pessoas/:id", (req, res) => {
+app.delete("/api/delete/pessoas/:id", async (req, res) => {
   const id = req.params.id;
-
   const sqlDelete = "DELETE FROM pessoas where id = ?";
   db.query(sqlDelete, id, (err, result) => {
     console.log(err);
-  })
+  });
 });
 
 app.get("/api/relatorios/mensal", (req, res) => {
@@ -135,6 +125,29 @@ app.get("/api/relatorios", (req, res) => {
     "SELECT pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_despesas, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE financeiro.cod_pessoa = pessoas.cnpj_cpf";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
+  });
+});
+
+app.post("/api/login", async (req, res) => {
+  const senha = req.body.senha;
+  const nome = req.body.nome;
+  db.query("SELECT * FROM users WHERE  nome = ? ", nome, (err, results) => {
+    if (err) {
+      console.log(err);
+    }
+    if (results.length > 0) {
+      if (senha === results[0].senha) {
+        res.json({ loggedIn: true, message: "Logado!" });
+        
+      } else {
+        res.json({
+          loggedIn: false,
+          message: "Usuário ou Senha incorretos!",
+        });
+      }
+    } else {
+      res.json({ loggedIn: false, message: "Usuario não Existe!" });
+    }
   });
 });
 

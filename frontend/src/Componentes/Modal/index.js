@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { FaUserEdit } from "react-icons/fa";
 import InputMask from "react-input-mask";
 import Axios from "axios";
-function Modale() {
+function Modale(id) {
   const [show, setShow] = useState(false);
   const [nome, setNome] = useState("");
   const [cnpj_cpf, setCnpj_cpf] = useState("");
@@ -25,13 +25,18 @@ function Modale() {
     });
   }, []);
 
-  const updatePessoas = () => {
-    Axios.put("http://localhost:3001/api/update", {
+  const updatePessoas = id => {
+    Axios.put("http://localhost:3001/api/update/pessoas", {
       nome: nome,
-    
-    });
-    setShow(false);
-    alert("sucesso alteração");
+      id: id,
+    })
+      .then(response => {
+        alert("Alterou");
+        setShow(false);
+      })
+      .catch(erro => {
+        console.log(erro);
+      });
   };
 
   return (
@@ -69,7 +74,6 @@ function Modale() {
                 <label>CPF/CNPJ</label>
                 <input
                   type="text"
-                  value={val.cnpj_cpf}
                   className="form-control "
                   onChange={e => setCnpj_cpf(e.target.value)}
                 />
@@ -134,6 +138,7 @@ function Modale() {
           </Modal>
         );
       })}
+
       <Button variant="primary" onClick={handleShow}>
         <FaUserEdit />
       </Button>

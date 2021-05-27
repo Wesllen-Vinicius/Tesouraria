@@ -15,6 +15,7 @@ exports.seed = function (knex) {
           bairro: "MorarMelhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895202",
@@ -26,6 +27,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895203",
@@ -37,6 +39,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895204",
@@ -48,6 +51,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895205",
@@ -59,6 +63,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895206",
@@ -70,6 +75,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895209",
@@ -81,6 +87,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895207",
@@ -92,6 +99,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895208",
@@ -103,6 +111,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895200",
@@ -114,6 +123,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895210",
@@ -125,6 +135,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895211",
@@ -136,6 +147,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895212",
@@ -147,6 +159,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895213",
@@ -158,6 +171,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895214",
@@ -169,6 +183,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895215",
@@ -180,6 +195,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895216",
@@ -191,6 +207,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
         {
           cnpj_cpf: "03538895217",
@@ -202,6 +219,7 @@ exports.seed = function (knex) {
           bairro: "Morar Melhor",
           cep: "76800-562",
           numero: "80",
+          tipo_cliente: "Fornecedor",
         },
       ]);
     });

@@ -19,7 +19,7 @@ function Relatorios() {
   }, []);
 
   function Pesquisar() {
-    Axios.get("http://localhost:3001/api/relatorios/mensal", {
+    Axios.post("http://localhost:3001/api/relatorios/mensal", {
       params: { mes: mesPesquisa, ano: anoMensal },
     })
       .then(response => {
