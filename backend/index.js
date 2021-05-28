@@ -55,11 +55,12 @@ app.post("/api/financeiro", (req, res) => {
   const data_vencimento = req.body.data_vencimento;
   const data_pagamento = req.body.data_pagamento;
   const cod_pessoa = req.body.cod_pessoa;
-  const tipo_despesas = req.body.tipo_despesas;
+  const tipo_negocio = req.body.tipo_negocio;
   const quant_parcelas = req.body.quant_parcelas;
 
   const sqlInsert =
-    "INSERT INTO financeiro (tipo_conta, valor_titulo, data_vencimento, data_pagamento,cod_pessoa,tipo_despesas,quant_parcelas) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO financeiro (tipo_conta, valor_titulo, data_vencimento, data_pagamento,cod_pessoa,tipo_negocio,quant_parcelas) VALUES (?,?,?,?,?,?,?)";
+
   db.query(
     sqlInsert,
     [
@@ -68,7 +69,7 @@ app.post("/api/financeiro", (req, res) => {
       data_vencimento,
       data_pagamento,
       cod_pessoa,
-      tipo_despesas,
+      tipo_negocio,
       quant_parcelas,
     ],
     (err, result) => {
@@ -91,10 +92,9 @@ app.get("/api/financeiro", (req, res) => {
   });
 });
 
-app.put("/api/update/pessoas", (req, res) => {
+app.put("/api/update/pessoas/:id", (req, res) => {
   const id = req.body.id;
   const nome = req.body.nome;
-
   const sqlUpdate = "UPDATE pessoas SET  nome = ? WHERE id = ?";
 
   db.query(sqlUpdate, [nome, id], (err, result) => {
@@ -102,11 +102,20 @@ app.put("/api/update/pessoas", (req, res) => {
   }).catch();
 });
 
-app.delete("/api/delete/pessoas/:id", (req, res) => {
+app.delete("/api/delete/pessoas/:id", async (req, res) => {
   const id = req.params.id;
-
   const sqlDelete = "DELETE FROM pessoas where id = ?";
   db.query(sqlDelete, id, (err, result) => {
+    console.log(err);
+
+    res.json({ message: "Registro Apagado com Sucesso!" });
+  });
+});
+
+app.delete("/api/delete/contas/:cod_conta", async (req, res) => {
+  const cod_conta = req.params.cod_conta;
+  const sqlDelete = "DELETE FROM financeiro where cod_conta = ?";
+  db.query(sqlDelete, cod_conta, (err, result) => {
     console.log(err);
   });
 });
@@ -129,7 +138,27 @@ app.get("/api/relatorios", (req, res) => {
   });
 });
 
-app.post("/api/login", (req, res) => {});
+app.post("/api/login", async (req, res) => {
+  const senha = req.body.senha;
+  const nome = req.body.nome;
+  db.query("SELECT * FROM users WHERE  nome = ? ", nome, (err, results) => {
+    if (err) {
+      console.log(err);
+    }
+    if (results.length > 0) {
+      if (senha === results[0].senha) {
+        res.json({ loggedIn: true, message: "Logado!" });
+      } else {
+        res.json({
+          loggedIn: false,
+          message: "Usuário ou Senha incorretos!",
+        });
+      }
+    } else {
+      res.json({ loggedIn: false, message: "Usuario não Existe!" });
+    }
+  });
+});
 
 app.listen(3001, () => {
   console.log("Rodando na porta 3001");

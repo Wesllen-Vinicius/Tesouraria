@@ -1,19 +1,29 @@
 import React, { useState } from "react";
 import { HiFingerPrint } from "react-icons/hi";
+import { useHistory } from "react-router-dom";
 import "./login.css";
 import Axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  const history = useHistory();
   function logar() {
     if (email === "" || senha === "") {
-      alert("campos vazios");
+      setMensagem("Usuário/senha não informados!!");
+    } else {
+      Axios.post("http://localhost:3001/api/login", {
+        nome: email,
+        senha: senha,
+      }).then(response => {
+        setMensagem(response.data.message);
+        if (response.data.message === "Logado!") {
+          history.push("/Home");
+        }
+      });
     }
-    Axios.get("http://localhost:3001/api/login", {
-      email: email,
-      senha: senha,
-    });
   }
+
   return (
     <div class="wrapper fadeInDown">
       <div id="formContent">
@@ -31,6 +41,7 @@ function Login() {
             placeholder="Usuario"
             onChange={e => setEmail(e.target.value)}
           />
+
           <input
             type="password"
             id="Senha"
@@ -47,6 +58,9 @@ function Login() {
             class="fadeIn fourth "
             value="Logar"
           />
+          <div>
+            <p>{mensagem}</p>
+          </div>
         </div>
       </div>
     </div>

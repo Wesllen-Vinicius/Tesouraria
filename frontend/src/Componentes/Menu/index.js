@@ -8,30 +8,30 @@ import { IoDocumentTextSharp } from "react-icons/io5";
 
 function Menu() {
   return (
-      <aside className="menu text-white">
-        <div className="links-navegacao text-center">
-          <Link to="/">
-            <ImHome size={30} color="white" />
-          </Link>
-        </div>
-        <div className="links-navegacao text-center">
-          <Link to="/CadastroTitulo">
-            <FaMoneyCheckAlt size={30} color="white" />
-          </Link>
-        </div>
+    <aside className="menu text-white">
+      <div className="links-navegacao text-center">
+        <Link to="/Home">
+          <ImHome size={30} color="white" />
+        </Link>
+      </div>
+      <div className="links-navegacao text-center">
+        <Link to="/CadastroTitulo">
+          <FaMoneyCheckAlt size={30} color="white" />
+        </Link>
+      </div>
 
-        <div className="links-navegacao text-center">
-          <Link to="/CadastroCliente">
-            <FaUserCheck size={30} color="white" />
-          </Link>
-        </div>
-        <div className="links-navegacao text-center">
-          <Link to="/Relatorios">
-            <IoDocumentTextSharp size={30} color="white" />
-          </Link>
-        </div>
-      </aside>
-      ); 
-  }
-   
+      <div className="links-navegacao text-center">
+        <Link to="/CadastroCliente">
+          <FaUserCheck size={30} color="white" />
+        </Link>
+      </div>
+      <div className="links-navegacao text-center">
+        <Link to="/Relatorios">
+          <IoDocumentTextSharp size={30} color="white" />
+        </Link>
+      </div>
+    </aside>
+  );
+}
+
 export default Menu;

@@ -26,6 +26,7 @@ function Modale(id) {
   }, []);
 
   const updatePessoas = id => {
+    console.log(id);
     Axios.put("http://localhost:3001/api/update/pessoas", {
       nome: nome,
       id: id,
@@ -44,83 +45,88 @@ function Modale(id) {
       {listPessoas.map(val => {
         return (
           <Modal show={show} onHide={handleClose}>
-            <Modal.Header className="bg-info text-white" closeButton>
+            <Modal.Header className="bg-info text-white">
               <Modal.Title>Alterar Dados</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div className="column mb-2">
-                <label>Tipo de pessoas</label>
-                <select
-                  className="form-control"
-                  aria-label="Default select example"
-                  onChange={e => setTipo_pessoa(e.target.value)}
-                >
-                  <option selected>Tipo de Pessoa</option>
-                  <option value="fisica">Pessoa Física</option>
-                  <option value="juridica">Pessoa juridica</option>
-                </select>
-                <label>Tipo de Cliente</label>
-                <select
-                  className="form-control"
-                  aria-label="Default select example"
-                  onChange={e => setTipo_cliente(e.target.value)}
-                >
-                  <option selected>Tipo de Cliente</option>
-                  <option value="Cliente">Cliente</option>
-                  <option value="Fornecedor">Fornecedor</option>
-                </select>
-              </div>
-              <div className="column mb-2">
-                <label>CPF/CNPJ</label>
-                <input
-                  type="text"
-                  className="form-control "
-                  onChange={e => setCnpj_cpf(e.target.value)}
-                />
-                <label>Nome</label>
-                <input
-                  type="text"
-                  className="form-control "
-                  onChange={e => setNome(e.target.value)}
-                />
-              </div>
-              <div className="column mb-2">
-                <label>Contato</label>
-                <InputMask
-                  mask="(99)99999-9999"
-                  type="tel"
-                  className="form-control"
-                  onChange={e => setContato(e.target.value)}
-                />
-                <label>CEP</label>
-                <InputMask
-                  mask="99999-999"
-                  type="text"
-                  className="form-control"
-                  onChange={e => setCep(e.target.value)}
-                />
-              </div>
-              <div className="column mb-2">
-                <label>Bairro</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  onChange={e => setBairro(e.target.value)}
-                />
+              <div className="row">
+                <div className="col-6 mb-2">
+                  <label>Tipo de pessoas</label>
+                  <select
+                    className="form-control"
+                    aria-label="Default select example"
+                    onChange={e => setTipo_pessoa(e.target.value)}
+                  >
+                    <option selected>Tipo de Pessoa</option>
+                    <option value="fisica">Pessoa Física</option>
+                    <option value="juridica">Pessoa juridica</option>
+                  </select>
+                  <label>Tipo de Cliente</label>
+                  <select
+                    className="form-control"
+                    aria-label="Default select example"
+                    onChange={e => setTipo_cliente(e.target.value)}
+                  >
+                    <option selected>Tipo de Cliente</option>
+                    <option value="Cliente">Cliente</option>
+                    <option value="Fornecedor">Fornecedor</option>
+                  </select>
+                </div>
+                <div className="col-6 mb-2">
+                  <label>CPF/CNPJ</label>
+                  <input
+                    type="text"
+                    className="form-control "
+                    onChange={e => setCnpj_cpf(e.target.value)}
+                  />
 
-                <label>Número</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  onChange={e => setNumero(e.target.value)}
-                />
+                  <label>Nome</label>
+                  <input
+                    type="text"
+                    className="form-control "
+                    onChange={e => setNome(e.target.value)}
+                  />
+                </div>
+                <div className="col-6 mb-2">
+                  <label>Contato</label>
+                  <InputMask
+                    mask="(99)99999-9999"
+                    type="tel"
+                    className="form-control"
+                    onChange={e => setContato(e.target.value)}
+                  />
+                  <label>CEP</label>
+                  <InputMask
+                    mask="99999-999"
+                    type="text"
+                    className="form-control"
+                    onChange={e => setCep(e.target.value)}
+                  />
+                </div>
+                <div className="col-6 mb-2">
+                  <label>Bairro</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={e => setBairro(e.target.value)}
+                  />
+
+                  <label>Número</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    onChange={e => setNumero(e.target.value)}
+                  />
+                </div>
+                <div className="col-12">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </div>
               </div>
-              <label>Email</label>
-              <input
-                type="email"
-                className="form-control"
-                onChange={e => setEmail(e.target.value)}
-              />
             </Modal.Body>
             <Modal.Footer className="bg-info ">
               <Button variant="danger " onClick={handleClose}>
@@ -129,7 +135,7 @@ function Modale(id) {
               <Button
                 variant="light"
                 onClick={() => {
-                  updatePessoas(val.id);
+                  updatePessoas(id);
                 }}
               >
                 Salvar
@@ -140,7 +146,7 @@ function Modale(id) {
       })}
 
       <Button variant="primary" onClick={handleShow}>
-        <FaUserEdit />
+        <FaUserEdit size={20} />
       </Button>
     </>
   );

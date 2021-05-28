@@ -5,6 +5,7 @@ import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
 import InputMask from "react-input-mask";
+import ModaleApagar from "../../Componentes/Apagar/index";
 
 import { RiDeleteBinLine } from "react-icons/ri";
 import Modale from "../../Componentes/Modal/index";
@@ -26,15 +27,7 @@ function CadastroCliente() {
       setListPessoas(response.data);
     });
   }, []);
-  const Deletar = id => {
-    Axios.delete(`http://localhost:3001/api/delete/pessoas/${id}`)
-      .then(() => {
-        alert("Conta excluida com sucesso");
-      })
-      .catch(erro => {
-        alert("ops! Usuario possui itens no financeiro Cadastrado!!");
-      });
-  };
+
   const cadastrar = () => {
     if (
       nome === "" ||
@@ -211,19 +204,11 @@ function CadastroCliente() {
                     <td className="">{val.cep}</td>
                     <td>{val.contato}</td>
                     <td>{val.dataDeCadastro}</td>
-                    <th className="">
-                      <div>
+                    <th>
+                      <div className="col-12 btn-acoes">
                         <Modale id={val.id} />
-                      </div>
-                      <div>
-                        <button
-                          className="btn"
-                          onClick={() => {
-                            Deletar(val.id);
-                          }}
-                        >
-                          <RiDeleteBinLine size={25} />
-                        </button>
+
+                        <ModaleApagar id={val.id} />
                       </div>
                     </th>
                   </tr>
