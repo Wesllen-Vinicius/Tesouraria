@@ -3,7 +3,6 @@ import { HiFingerPrint } from "react-icons/hi";
 import { useHistory } from "react-router-dom";
 import "./login.css";
 import Axios from "axios";
-import firebase from "../../firebase/firebase";
 function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");

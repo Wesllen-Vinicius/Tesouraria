@@ -5,6 +5,7 @@ import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
 import InputMask from "react-input-mask";
+import ModaleApagar from "../../Componentes/Apagar/index";
 
 import { RiDeleteBinLine } from "react-icons/ri";
 import Modale from "../../Componentes/Modal/index";
@@ -20,21 +21,15 @@ function CadastroCliente() {
   const [email, setEmail] = useState("");
   const [tipo_cliente, setTipo_cliente] = useState("");
   const [listPessoas, setListPessoas] = useState([]);
+  const [pesquisa, setPesquisa] = useState("");
+  const [tipoPesquisa, setTipoPesquisa] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:3001/api/pessoas").then(response => {
       setListPessoas(response.data);
     });
   }, []);
-  const Deletar = id => {
-    Axios.delete(`http://localhost:3001/api/delete/pessoas/${id}`)
-      .then(() => {
-        alert("Conta excluida com sucesso");
-      })
-      .catch(erro => {
-        alert("ops! Usuario possui itens no financeiro Cadastrado!!");
-      });
-  };
+
   const cadastrar = () => {
     if (
       nome === "" ||
@@ -64,6 +59,21 @@ function CadastroCliente() {
       });
     }
   };
+  function Pesquisa() {
+    if (pesquisa === "") {
+      alert("campo de pesquisa vazio");
+    } else {
+      Axios.post("http://localhost:3001/api/pesquisa/pessoas", {
+        cnpj_cpf: pesquisa,
+      })
+        .then(response => {
+          setListPessoas(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
 
   return (
     <div id="app">
@@ -80,7 +90,9 @@ function CadastroCliente() {
                 onChange={e => setTipo_pessoa(e.target.value)}
                 aria-label="Default select example"
               >
-                <option selected>Tipo de Pessoa</option>
+                <option selected value="">
+                  Tipo de Pessoa
+                </option>
                 <option value="fisica">Pessoa Física</option>
                 <option value="juridica">Pessoa juridica</option>
               </select>
@@ -90,7 +102,9 @@ function CadastroCliente() {
                 onChange={e => setTipo_cliente(e.target.value)}
                 aria-label="Default select example"
               >
-                <option selected>Tipo de Cliente</option>
+                <option selected value="">
+                  Tipo de Cliente
+                </option>
                 <option value="Cliente">Cliente</option>
                 <option value="Fornecedor">Fornecedor</option>
               </select>
@@ -178,7 +192,24 @@ function CadastroCliente() {
             <button onClick={cadastrar}>Cadastrar</button>
           </div>
         </form>
+        <div className="col-6">
+       
+            <div>
+              <label>CPF</label>
+              <InputMask
+                mask="999.999.999-99"
+                type="text"
+                className="form-control"
+                onChange={e => setPesquisa(e.target.value)}
+              />
+            </div>
 
+          <div>
+            <button className="btn btn-primary mt-2" onClick={Pesquisa}>
+              Pesquisar
+            </button>
+          </div>
+        </div>
         <div className="table-responsive" id="sailorTableArea">
           <table
             id="sailorTable"
@@ -200,9 +231,9 @@ function CadastroCliente() {
             </thead>
 
             <tbody>
-              {listPessoas.map((val, index) => {
+              {listPessoas.map(val => {
                 return (
-                  <tr key={index}>
+                  <tr>
                     <td className="tableId">{val.id}</td>
                     <td className="">{val.cnpj_cpf}</td>
                     <td className="">{val.nome}</td>
@@ -211,19 +242,11 @@ function CadastroCliente() {
                     <td className="">{val.cep}</td>
                     <td>{val.contato}</td>
                     <td>{val.dataDeCadastro}</td>
-                    <th className="">
-                      <div>
+                    <th>
+                      <div className="col-12 btn-acoes">
                         <Modale id={val.id} />
-                      </div>
-                      <div>
-                        <button
-                          className="btn"
-                          onClick={() => {
-                            Deletar(val.id);
-                          }}
-                        >
-                          <RiDeleteBinLine size={25} />
-                        </button>
+
+                        <ModaleApagar id={val.id} />
                       </div>
                     </th>
                   </tr>

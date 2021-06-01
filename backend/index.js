@@ -55,11 +55,12 @@ app.post("/api/financeiro", (req, res) => {
   const data_vencimento = req.body.data_vencimento;
   const data_pagamento = req.body.data_pagamento;
   const cod_pessoa = req.body.cod_pessoa;
-  const tipo_despesas = req.body.tipo_despesas;
+  const tipo_negocio = req.body.tipo_negocio;
   const quant_parcelas = req.body.quant_parcelas;
 
   const sqlInsert =
-    "INSERT INTO financeiro (tipo_conta, valor_titulo, data_vencimento, data_pagamento,cod_pessoa,tipo_despesas,quant_parcelas) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO financeiro (tipo_conta, valor_titulo, data_vencimento, data_pagamento,cod_pessoa,tipo_negocio,quant_parcelas) VALUES (?,?,?,?,?,?,?)";
+
   db.query(
     sqlInsert,
     [
@@ -68,7 +69,7 @@ app.post("/api/financeiro", (req, res) => {
       data_vencimento,
       data_pagamento,
       cod_pessoa,
-      tipo_despesas,
+      tipo_negocio,
       quant_parcelas,
     ],
     (err, result) => {
@@ -91,10 +92,9 @@ app.get("/api/financeiro", (req, res) => {
   });
 });
 
-app.put("/api/update/pessoas", (req, res) => {
+app.put("/api/update/pessoas/:id", (req, res) => {
   const id = req.body.id;
   const nome = req.body.nome;
-
   const sqlUpdate = "UPDATE pessoas SET  nome = ? WHERE id = ?";
 
   db.query(sqlUpdate, [nome, id], (err, result) => {
@@ -107,22 +107,33 @@ app.delete("/api/delete/pessoas/:id", async (req, res) => {
   const sqlDelete = "DELETE FROM pessoas where id = ?";
   db.query(sqlDelete, id, (err, result) => {
     console.log(err);
+
+    res.json({ message: "Registro Apagado com Sucesso!" });
   });
 });
 
-app.get("/api/relatorios/mensal", (req, res) => {
-  const mes = req.body.mesPesquisa;
-  const ano = req.body.anoMensal;
+app.delete("/api/delete/contas/:cod_conta", async (req, res) => {
+  const cod_conta = req.params.cod_conta;
+  const sqlDelete = "DELETE FROM financeiro where cod_conta = ?";
+  db.query(sqlDelete, cod_conta, (err, result) => {
+    console.log(err);
+  });
+});
+
+app.post("/api/relatorios/mensal", async (req, res) => {
+  const data = req.body.data;
+  const data2 = req.body.data2;
   const sqlSelect =
-    "select * from financeiro where data_vencimento Like (?-?-%)";
-  db.query(sqlSelect, [mes, ano], (err, result) => {
+    "SELECT  pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_negocio, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE data_vencimento BETWEEN ? AND ?";
+  db.query(sqlSelect, [data, data2], (err, result) => {
     res.send(result);
+    console.log(err);
   });
 });
 
-app.get("/api/relatorios", (req, res) => {
+app.get("/api/relatorios", async (req, res) => {
   const sqlSelect =
-    "SELECT pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_despesas, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE financeiro.cod_pessoa = pessoas.cnpj_cpf";
+    "SELECT pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_negocio, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE financeiro.cod_pessoa = pessoas.cnpj_cpf";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
@@ -138,7 +149,6 @@ app.post("/api/login", async (req, res) => {
     if (results.length > 0) {
       if (senha === results[0].senha) {
         res.json({ loggedIn: true, message: "Logado!" });
-        
       } else {
         res.json({
           loggedIn: false,
@@ -147,6 +157,22 @@ app.post("/api/login", async (req, res) => {
       }
     } else {
       res.json({ loggedIn: false, message: "Usuario não Existe!" });
+    }
+  });
+});
+
+app.post("/api/pesquisa/pessoas", async (req, res) => {
+  const cnpj_cpf = req.body.cnpj_cpf;
+  const sqlSelect =
+    "SELECT id, cnpj_cpf, nome, tipo_pessoa, email, cep, contato, dataDeCadastro  FROM pessoas WHERE cnpj_cpf = ? ";
+  db.query(sqlSelect, cnpj_cpf, (err, result) => {
+    console.log(result);
+    console.log(cnpj_cpf);
+    console.log(err);
+    if (err) {
+      res.json({ message: "Pesquisa Invalida!", err });
+    } else {
+      res.json({ message: "Pesquisa Realizada com Sucesso!" });
     }
   });
 });

@@ -75,7 +75,7 @@ tbody tr {
   width: 100px;
 }
 
-.tableAcoes button {
-  border: none;
-  flex-direction: column;
+.btn-acoes button {
+  padding: 10px;
+  margin: 6px;
 }
