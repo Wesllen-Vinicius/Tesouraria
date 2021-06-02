@@ -5,10 +5,8 @@ import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
 import InputMask from "react-input-mask";
-import ModaleApagar from "../../Componentes/Apagar/index";
 
 import { RiDeleteBinLine } from "react-icons/ri";
-import Modale from "../../Componentes/Modal/index";
 
 function CadastroCliente() {
   const [nome, setNome] = useState("");
@@ -21,6 +19,9 @@ function CadastroCliente() {
   const [email, setEmail] = useState("");
   const [tipo_cliente, setTipo_cliente] = useState("");
   const [listPessoas, setListPessoas] = useState([]);
+  const [pesquisa, setPesquisa] = useState("");
+  const [Mensagem, setMensagem] = useState("");
+  const [MensagemCadastro, setMensagemCadastro] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:3001/api/pessoas").then(response => {
@@ -29,34 +30,51 @@ function CadastroCliente() {
   }, []);
 
   const cadastrar = () => {
-    if (
-      nome === "" ||
-      cnpj_cpf === "" ||
-      bairro === "" ||
-      cep === "" ||
-      numero === "" ||
-      tipo_pessoa === "" ||
-      contato === "" ||
-      email === ""
-    ) {
-      alert("campos vazios");
+    Axios.post("http://localhost:3001/api/pessoas", {
+      nome: nome,
+      bairro: bairro,
+      cep: cep,
+      cnpj_cpf: cnpj_cpf,
+      tipo_pessoa: tipo_pessoa,
+      numero: numero,
+      contato: contato,
+      tipo_cliente: tipo_cliente,
+      email: email,
+      dataDeCadastro: new Date().toLocaleDateString("pt-BR"),
+    })
+      .then(response => {
+        setMensagemCadastro(response.data.message);
+      })
+      .catch(err => {
+        setMensagem(err.data.message);
+      });
+  };
+  function Pesquisa() {
+    if (pesquisa === "") {
+      alert("campo de pesquisa vazio");
     } else {
-      Axios.post("http://localhost:3001/api/pessoas", {
-        nome: nome,
-        bairro: bairro,
-        cep: cep,
-        cnpj_cpf: cnpj_cpf,
-        tipo_pessoa: tipo_pessoa,
-        numero: numero,
-        contato: contato,
-        tipo_cliente: tipo_cliente,
-        email: email,
-        dataDeCadastro: new Date().toLocaleDateString("pt-BR"),
-      }).then(() => {
-        alert("sucess insert");
+      Axios.post("http://localhost:3001/api/pesquisa/pessoas", {
+        cnpj_cpf: pesquisa,
+      }).then(response => {
+        setListPessoas(response.data);
       });
     }
+  }
+  const Deletar = id => {
+    console.log(id);
+    Axios.delete(`http://localhost:3001/api/delete/pessoas/${id}`).then(
+      response => {
+        if (response.data.message === "Usuario possui contas pendentes!") {
+          setMensagem(response.data.message);
+        } else {
+          setMensagemCadastro(response.data.message);
+        }
+      }
+    );
   };
+  function teste() {
+    setNome("gabriel");
+  }
 
   return (
     <div id="app">
@@ -64,113 +82,138 @@ function CadastroCliente() {
       <Menu />
 
       <div className="content">
-        <form className="form-floating formulario">
-          <div className="row">
+        <div className="row formulario">
+          <div className="col-6">
+            <label>Tipo de pessoas</label>
+            <select
+              className="form-control"
+              onChange={e => setTipo_pessoa(e.target.value)}
+              aria-label="Default select example"
+            >
+              <option selected value="">
+                Tipo de Pessoa
+              </option>
+              <option value="fisica">Pessoa Física</option>
+              <option value="juridica">Pessoa juridica</option>
+            </select>
+            <label>Tipo de Cliente</label>
+            <select
+              className="form-control"
+              onChange={e => setTipo_cliente(e.target.value)}
+              aria-label="Default select example"
+            >
+              <option selected value="">
+                Tipo de Cliente
+              </option>
+              <option value="Cliente">Cliente</option>
+              <option value="Fornecedor">Fornecedor</option>
+            </select>
+          </div>
+          {tipo_pessoa === "fisica" ? (
             <div className="col-6">
-              <label>Tipo de pessoas</label>
-              <select
-                className="form-control"
-                onChange={e => setTipo_pessoa(e.target.value)}
-                aria-label="Default select example"
-              >
-                <option selected>Tipo de Pessoa</option>
-                <option value="fisica">Pessoa Física</option>
-                <option value="juridica">Pessoa juridica</option>
-              </select>
-              <label>Tipo de Cliente</label>
-              <select
-                className="form-control"
-                onChange={e => setTipo_cliente(e.target.value)}
-                aria-label="Default select example"
-              >
-                <option selected>Tipo de Cliente</option>
-                <option value="Cliente">Cliente</option>
-                <option value="Fornecedor">Fornecedor</option>
-              </select>
-            </div>
-            {tipo_pessoa === "fisica" ? (
-              <div className="col-6">
-                <label>CPF</label>
-                <InputMask
-                  mask="999.999.999-99"
-                  type="text"
-                  className="form-control "
-                  onChange={e => setCnpj_cpf(e.target.value)}
-                />
-
-                <label>Nome</label>
-                <input
-                  type="text"
-                  className="form-control "
-                  onChange={e => setNome(e.target.value)}
-                />
-              </div>
-            ) : null}
-            {tipo_pessoa === "juridica" ? (
-              <div className="col-6">
-                <label>CNPJ</label>
-                <InputMask
-                  mask="99.999.999/9999-99"
-                  type="text"
-                  className="form-control "
-                  onChange={e => setCnpj_cpf(e.target.value)}
-                />
-
-                <label>Nome Fantasia</label>
-                <input
-                  type="text"
-                  className="form-control "
-                  onChange={e => setNome(e.target.value)}
-                />
-              </div>
-            ) : null}
-
-            <div className="col-6">
-              <label>CEP</label>
+              <label>CPF</label>
               <InputMask
-                mask="99999-999"
+                mask="999.999.999-99"
                 type="text"
-                className="form-control"
-                onChange={e => setCep(e.target.value)}
+                className="form-control "
+                onChange={e => setCnpj_cpf(e.target.value)}
               />
-              <label>Contato</label>
-              <InputMask
-                mask="(99)99999-9999"
-                type="tel"
-                className="form-control"
-                onChange={e => setContato(e.target.value)}
-              />
-            </div>
-            <div className="col-6">
-              <label>Bairro</label>
+
+              <label>Nome</label>
               <input
                 type="text"
-                className="form-control"
-                onChange={e => setBairro(e.target.value)}
-              />
-
-              <label>Número</label>
-              <input
-                type="number"
-                className="form-control"
-                onChange={e => setNumero(e.target.value)}
+                className="form-control "
+                onChange={e => setNome(e.target.value)}
               />
             </div>
+          ) : null}
+          {tipo_pessoa === "juridica" ? (
+            <div className="col-6">
+              <label>CNPJ</label>
+              <InputMask
+                mask="99.999.999/9999-99"
+                type="text"
+                className="form-control "
+                onChange={e => setCnpj_cpf(e.target.value)}
+              />
 
-            <div className="col-12">
-              <label>Email</label>
+              <label>Nome Fantasia</label>
               <input
-                type="email"
-                className="form-control"
-                onChange={e => setEmail(e.target.value)}
+                type="text"
+                className="form-control "
+                onChange={e => setNome(e.target.value)}
               />
             </div>
+          ) : null}
+
+          <div className="col-6">
+            <label>CEP</label>
+            <InputMask
+              mask="99999-999"
+              type="text"
+              className="form-control"
+              onChange={e => setCep(e.target.value)}
+            />
+            <label>Contato</label>
+            <InputMask
+              mask="(99)99999-9999"
+              type="tel"
+              className="form-control"
+              onChange={e => setContato(e.target.value)}
+            />
+          </div>
+          <div className="col-6">
+            <label>Bairro</label>
+            <input
+              type="text"
+              className="form-control"
+              onChange={e => setBairro(e.target.value)}
+            />
+
+            <label>Número</label>
+            <input
+              type="number"
+              className="form-control"
+              onChange={e => setNumero(e.target.value)}
+            />
           </div>
 
-          <div className="button-cadastrar ">
-            <button onClick={cadastrar}>Cadastrar</button>
+          <div className="col-12">
+            <label>Email</label>
+            <input
+              type="email"
+              className="form-control"
+              onChange={e => setEmail(e.target.value)}
+            />
           </div>
-        </form>
+        </div>
+
+        <div className="button-cadastrar ">
+          <button onClick={cadastrar}>Cadastrar</button>
+        </div>
+        <div className="row">
+          <div className="col-6 ">
+            <div>
+              <label>CPF/CNPJ</label>
+              <InputMask
+                type="text"
+                className="form-control"
+                onChange={e => setPesquisa(e.target.value)}
+              />
+            </div>
+            <div>
+              <button className="btn btn-primary my-2 " onClick={Pesquisa}>
+                Pesquisar
+              </button>
+            </div>
+          </div>
+          <div className=" mensagem col-6 mt-4">
+            <p className=" text-center">{Mensagem}</p>
+          </div>
+          <div className=" mensagem-cadastro col-12">
+            <p className=" text-center">{MensagemCadastro}</p>
+          </div>
+        </div>
 
         <div className="table-responsive" id="sailorTableArea">
           <table
@@ -193,9 +236,9 @@ function CadastroCliente() {
             </thead>
 
             <tbody>
-              {listPessoas.map((val, index) => {
+              {listPessoas.map(val => {
                 return (
-                  <tr key={index}>
+                  <tr>
                     <td className="tableId">{val.id}</td>
                     <td className="">{val.cnpj_cpf}</td>
                     <td className="">{val.nome}</td>
@@ -206,9 +249,14 @@ function CadastroCliente() {
                     <td>{val.dataDeCadastro}</td>
                     <th>
                       <div className="col-12 btn-acoes">
-                        <Modale id={val.id} />
-
-                        <ModaleApagar id={val.id} />
+                        <button
+                          className="btn btn-danger "
+                          onClick={() => {
+                            Deletar(val.id);
+                          }}
+                        >
+                          <RiDeleteBinLine size={25} />
+                        </button>
                       </div>
                     </th>
                   </tr>

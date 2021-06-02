@@ -8,7 +8,6 @@ import InputMask from "react-input-mask";
 
 function Relatorios() {
   const [relatorio, setRelatorio] = useState([]);
-  const [tipoRelatorio, setTipoRelatorio] = useState("");
   const [mesPesquisa, setMesPesquisa] = useState("");
   const [anoMensal, setAnoMensal] = useState("");
 
@@ -20,7 +19,8 @@ function Relatorios() {
 
   function Pesquisar() {
     Axios.post("http://localhost:3001/api/relatorios/mensal", {
-      params: { mes: mesPesquisa, ano: anoMensal },
+      data: mesPesquisa,
+      data2: anoMensal,
     })
       .then(response => {
         setRelatorio(response.data);
@@ -36,67 +36,31 @@ function Relatorios() {
       <div className="content">
         <div className="row py-3 pesquisa">
           <div className="col-2">
-            <label>Tipo relatorio</label>
-            <select
+            <label>Data inicial</label>
+            <input
               className="form-control"
-              onChange={e => setTipoRelatorio(e.target.value)}
-              aria-label="Default select example"
-            >
-              <option selected>Tipo relatorio</option>
-              <option value="mensal">Mensal</option>
-              <option value="anual">Anual</option>
-              <option value="semestral">Semestral</option>
-              <option value="porData">Por Data</option>
-            </select>
-          </div>
-          {tipoRelatorio === "mensal" ? (
-            <div className="col-2">
-              <label>Mes</label>
-              <select
-                className="form-control"
-                aria-label="Default select example"
-                onChange={e => setMesPesquisa(e.target.value)}
-              >
-                <option>Escolha o mês</option>
-                <option value="01">Janeiro</option>
-                <option value="02">Fevereiro</option>
-                <option value="03">Março</option>
-                <option value="04">Abril</option>
-                <option value="05">Maio</option>
-                <option value="06">Junho</option>
-                <option value="07">Julho</option>
-                <option value="08">Agosto</option>
-                <option value="09">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
-              </select>
+              type="date"
+              onChange={e => setMesPesquisa(e.target.value)}
+            />
 
-              <label>Data</label>
-              <InputMask
-                type="text"
-                mask="9999"
-                className="form-control "
-                onChange={e => setAnoMensal(e.target.value)}
-              />
-            </div>
-          ) : null}
-          {tipoRelatorio === "anual" ? (
-            <div className="col-2">
-              <label>Data</label>
-              <InputMask type="text" mask="9999" className="form-control " />
-            </div>
-          ) : null}
+            <label>Data final</label>
+            <input
+              className="form-control"
+              type="date"
+              onChange={e => setAnoMensal(e.target.value)}
+            />
+          </div>
+
           <div className="col-2 button-pesquisa">
             <button className="btn btn-success " onClick={Pesquisar}>
               Pesquisar
             </button>
           </div>
         </div>
-        <div className="table-responsive" id="sailorTableArea">
+        <div className="table-responsive relatorio-table" id="sailorTableArea">
           <table
             id="sailorTable"
-            className="table table-striped table-bordered"
+            className="table  table-striped table-bordered"
             width="100%"
           >
             <thead>
@@ -116,7 +80,7 @@ function Relatorios() {
                     <td className="">{val.nome}</td>
                     <td className="">R$ {val.valor_titulo.toFixed(2)}</td>
                     <td className="">{val.tipo_conta}</td>
-                    <td className="">{val.tipo_despesas}</td>
+                    <td className="">{val.tipo_negocio}</td>
                     <td className="">{val.data_vencimento}</td>
                     <td className="">{val.data_pagamento}</td>
                   </tr>

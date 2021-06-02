@@ -29,159 +29,155 @@ function CadastroTitulo() {
 
   const Deletar = cod_conta => {
     Axios.delete(`http://localhost:3001/api/delete/contas/${cod_conta}`)
-      .then(() => {
-        alert("Conta excluida com sucesso");
+      .then(response => {
+        setMenssagem(response.data.message);
       })
-      .catch(erro => {
-        alert("ops! Usuario possui itens no financeiro Cadastrado!!");
+      .catch(err => {
+        setMenssagem(err.data.message);
       });
   };
 
   const cadastrar = () => {
-    if (
-      tipo_conta === "" ||
-      valor === "" ||
-      vencimento === "" ||
-      pagamento === "" ||
-      cod_pessoa === ""
-    ) {
-      setMenssagem("Campos vazios");
-    } else {
-      Axios.post("http://localhost:3001/api/financeiro", {
-        tipo_conta: tipo_conta,
-        tipo_negocio: tipo_negocio,
-        data_pagamento: pagamento,
-        quant_parcelas: quant_parcelas,
-        valor_titulo: valor,
-        data_vencimento: vencimento,
-        cod_pessoa: cod_pessoa,
-      }).then(() => {
-        alert("sucess insert");
+    Axios.post("http://localhost:3001/api/financeiro", {
+      tipo_conta: tipo_conta,
+      tipo_negocio: tipo_negocio,
+      data_pagamento: pagamento,
+      quant_parcelas: quant_parcelas,
+      valor_titulo: valor,
+      data_vencimento: vencimento,
+      cod_pessoa: cod_pessoa,
+    })
+      .then(response => {
+        setMenssagem(response.data.message);
+      })
+      .catch(err => {
+        setMenssagem(err.data.message);
       });
-    }
   };
   return (
     <div id="app">
       <Header />
       <Menu />
       <div className="content">
-        <form className="form-floating formulario">
-          <div className="row">
-            <div className="col-6">
-              <label>Tipo da conta</label>
+        <div className="row formulario">
+          <div className="col-6">
+            <label>Tipo da conta</label>
+            <select
+              className="form-control"
+              onChange={e => setTipo_conta(e.target.value)}
+            >
+              <option selected>Tipo de Conta</option>
+              <option value="A pagar">A pagar</option>
+              <option value="A receber">A receber</option>
+            </select>
+            <label>Parcelas</label>
+            <select
+              className="form-control"
+              onChange={e => setParcelas(e.target.value)}
+            >
+              <option selected value="-">
+                Parcelas
+              </option>
+              <option value="1x">
+                1x R$ {(valorFormatado / 1).toFixed(2)}
+              </option>
+              <option value="2x">
+                2x R$ {(valorFormatado / 2).toFixed(2)}
+              </option>
+              <option value="3x">
+                3x R$ {(valorFormatado / 3).toFixed(2)}
+              </option>
+              <option value="4x">
+                4x R$ {(valorFormatado / 4).toFixed(2)}
+              </option>
+              <option value="5x">
+                5x R$ {(valorFormatado / 5).toFixed(2)}
+              </option>
+              <option value="6x">
+                6x R$ {(valorFormatado / 6).toFixed(2)}
+              </option>
+              <option value="7x">
+                7x R$ {(valorFormatado / 7).toFixed(2)}
+              </option>
+              <option value="8x">
+                8x R$ {(valorFormatado / 8).toFixed(2)}
+              </option>
+              <option value="9x">
+                9x R$ {(valorFormatado / 9).toFixed(2)}
+              </option>
+              <option value="10x">
+                10x R$ {(valorFormatado / 10).toFixed(2)}
+              </option>
+              <option value="11x">
+                11x R$ {(valorFormatado / 11).toFixed(2)}
+              </option>
+              <option value="12x">
+                12x R$ {(valorFormatado / 12).toFixed(2)}
+              </option>
+            </select>
+          </div>
+          <div className="col-6">
+            <label>Valor</label>
+            <input
+              type="text"
+              className="form-control "
+              onChange={e => setValor(e.target.value)}
+            />
+            <div>
+              <label>Tipo</label>
               <select
                 className="form-control"
-                onChange={e => setTipo_conta(e.target.value)}
+                onChange={e => setTipo_negocio(e.target.value)}
               >
-                <option selected>Tipo de Conta</option>
-                <option value="A pagar">A pagar</option>
-                <option value="A receber">A receber</option>
+                <option selected>Tipo</option>
+                <option value="Consumo">Consumo</option>
+                <option value="Revenda">Revenda</option>
+                <option value="Patrimonio">Patrimonio</option>
+                <option value="Recebimento">Recebimento</option>
+                <option value="Vendas">Vendas</option>
+                <option value="Prestação de serviços">
+                  Prestação de serviços
+                </option>
+                <option value="Outros">Outros</option>
               </select>
-              <label>Parcelas</label>
-              <select
-                className="form-control"
-                onChange={e => setParcelas(e.target.value)}
-              >
-                <option selected value="-">
-                  Parcelas
-                </option>
-                <option value="1x">
-                  1x R$ {(valorFormatado / 1).toFixed(2)}
-                </option>
-                <option value="2x">
-                  2x R$ {(valorFormatado / 2).toFixed(2)}
-                </option>
-                <option value="3x">
-                  3x R$ {(valorFormatado / 3).toFixed(2)}
-                </option>
-                <option value="4x">
-                  4x R$ {(valorFormatado / 4).toFixed(2)}
-                </option>
-                <option value="5x">
-                  5x R$ {(valorFormatado / 5).toFixed(2)}
-                </option>
-                <option value="6x">
-                  6x R$ {(valorFormatado / 6).toFixed(2)}
-                </option>
-                <option value="7x">
-                  7x R$ {(valorFormatado / 7).toFixed(2)}
-                </option>
-                <option value="8x">
-                  8x R$ {(valorFormatado / 8).toFixed(2)}
-                </option>
-                <option value="9x">
-                  9x R$ {(valorFormatado / 9).toFixed(2)}
-                </option>
-                <option value="10x">
-                  10x R$ {(valorFormatado / 10).toFixed(2)}
-                </option>
-                <option value="11x">
-                  11x R$ {(valorFormatado / 11).toFixed(2)}
-                </option>
-                <option value="12x">
-                  12x R$ {(valorFormatado / 12).toFixed(2)}
-                </option>
-              </select>
-            </div>
-            <div className="col-6">
-              <label>Valor</label>
-              <input
-                type="text"
-                className="form-control "
-                onChange={e => setValor(e.target.value)}
-              />
-              <div>
-                <label>Tipo</label>
-                <select
-                  className="form-control"
-                  onChange={e => setTipo_negocio(e.target.value)}
-                >
-                  <option selected>Tipo</option>
-                  <option value="Consumo">Consumo</option>
-                  <option value="Revenda">Revenda</option>
-                  <option value="Patrimonio">Patrimonio</option>
-                  <option value="Recebimento">Recebimento</option>
-                  <option value="Vendas">Vendas</option>
-                  <option value="Prestação de serviços">
-                    Prestação de serviços
-                  </option>
-                  <option value="Outros">Outros</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label>Codigo da pessoa</label>
-              <input
-                type="text"
-                className="form-control "
-                onChange={e => setCod_pessoa(e.target.value)}
-              />
-            </div>
-            <div className="col-6">
-              <label>Vencimento</label>
-              <InputMask
-                type="text"
-                className="form-control "
-                onChange={e => setVencimento(e.target.value)}
-              />
-            </div>
-            <div className="col-12">
-              <label>Pagamento</label>
-              <InputMask
-                type="text"
-                className="form-control"
-                onChange={e => setPagamento(e.target.value)}
-              />
             </div>
           </div>
 
-          <div className="button-cadastrar">
-            <button onClick={cadastrar} className="mt-2">
-              Cadastrar
-            </button>
+          <div className="col-6">
+            <label>Codigo da pessoa</label>
+            <input
+              type="text"
+              className="form-control "
+              onChange={e => setCod_pessoa(e.target.value)}
+            />
           </div>
-        </form>
+          <div className="col-6">
+            <label>Vencimento</label>
+            <InputMask
+              type="date"
+              className="form-control "
+              onChange={e => setVencimento(e.target.value)}
+            />
+          </div>
+          <div className="col-12">
+            <label>Pagamento</label>
+            <InputMask
+              type="date"
+              className="form-control"
+              onChange={e => setPagamento(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="button-cadastrar">
+          <button onClick={cadastrar} className="mt-2">
+            Cadastrar
+          </button>
+        </div>
+
+        <div className=" mensagem mb-3">
+          <p className=" text-center">{menssagem}</p>
+        </div>
         <div className="table-responsive" id="sailorTableArea">
           <table
             id="sailorTable"
@@ -198,7 +194,7 @@ function CadastroTitulo() {
                 <th>Quantidade parcelas</th>
                 <th>Vencimento</th>
                 <th>Pagamento</th>
-                <th>ações</th>
+                <th className="acoes">ações</th>
               </tr>
             </thead>
 
@@ -214,7 +210,7 @@ function CadastroTitulo() {
                     <td>{val.quant_parcelas}</td>
                     <td>{val.data_vencimento}</td>
                     <td>{val.data_pagamento}</td>
-                    <th className="">
+                    <th className="acoes">
                       <div>
                         <button
                           className="btn btn-danger"
