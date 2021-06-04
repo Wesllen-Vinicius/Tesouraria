@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post("/api/pessoas", (req, res) => {
+app.post("/api/pessoas", async (req, res) => {
   const tipo_pessoa = req.body.tipo_pessoa;
   const cnpj_cpf = req.body.cnpj_cpf;
   const nome = req.body.nome;
@@ -44,12 +44,16 @@ app.post("/api/pessoas", (req, res) => {
       tipo_cliente,
     ],
     (err, result) => {
-      console.log(err);
+      if (err) {
+        res.json({ message: "Campos vazios!" });
+      } else {
+        res.json({ message: "Cadastro realizado com sucesso!" });
+      }
     }
   );
 });
 
-app.post("/api/financeiro", (req, res) => {
+app.post("/api/financeiro", async (req, res) => {
   const tipo_conta = req.body.tipo_conta;
   const valor_titulo = req.body.valor_titulo;
   const data_vencimento = req.body.data_vencimento;
@@ -73,50 +77,96 @@ app.post("/api/financeiro", (req, res) => {
       quant_parcelas,
     ],
     (err, result) => {
-      console.log(err);
+      if (err) {
+        res.json({ message: "Campos vazios!" });
+        console.log(err);
+      } else {
+        res.json({ message: "Cadastro realizado com sucesso!" });
+      }
     }
   );
 });
 
-app.get("/api/pessoas", (req, res) => {
+app.get("/api/pessoas", async (req, res) => {
   const sqlSelect = "SELECT * FROM pessoas ORDER BY id ";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
 });
 
-app.get("/api/financeiro", (req, res) => {
+app.get("/api/pessoas/:id", async (req, res) => {
+  const id = req.params.id;
+  const sqlSelect = "SELECT * FROM pessoas WHERE id = ? ";
+  db.query(sqlSelect, id, (err, result) => {
+    res.send(result);
+    console.log(result);
+  });
+});
+
+app.get("/api/financeiro", async (req, res) => {
   const sqlSelect = "SELECT * FROM financeiro ORDER BY data_vencimento desc";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
 });
 
-app.put("/api/update/pessoas/:id", (req, res) => {
-  const id = req.body.id;
+app.put("/api/update/pessoas/:id", async (req, res) => {
+  const id = req.params.id;
+  const tipo_pessoa = req.body.tipo_pessoa;
+  const cnpj_cpf = req.body.cnpj_cpf;
   const nome = req.body.nome;
-  const sqlUpdate = "UPDATE pessoas SET  nome = ? WHERE id = ?";
-
-  db.query(sqlUpdate, [nome, id], (err, result) => {
-    if (err) console.log(err);
-  }).catch();
+  const contato = req.body.contato;
+  const bairro = req.body.bairro;
+  const cep = req.body.cep;
+  const numero = req.body.numero;
+  const email = req.body.email;
+  const tipo_cliente = req.body.tipo_cliente;
+ 
+  const sqlUpdate = "UPDATE pessoas SET nome = ?, tipo_pessoa = ?, cnpj_cpf = ?, contato = ?, bairro = ?, cep = ?, numero = ?, email = ?, tipo_cliente = ? WHERE id = ? ";
+  db.query(sqlUpdate, [nome, tipo_pessoa, cnpj_cpf, contato, bairro, cep, numero, email, tipo_cliente,  id], (err, result) => {
+    console.log(err);
+    if (
+      nome == "" ||
+      tipo_pessoa == "" ||
+      cnpj_cpf == "" ||
+      contato == "" ||
+      bairro == "" ||
+      cep == "" ||
+      numero == "" ||
+      email == "" ||
+      tipo_cliente == "" ||
+      id == ""
+    ) {
+      res.json({ message: "Dados incorretos ou faltando!" });
+    } if(err) {
+      res.json({ message:"Algo deu Errado! Confirme se esta pessoa possui Contas/Registros Pendentes!!"})
+    } else {
+      res.json({message: "Dados Atualizados com Sucesso!!"})
+    }
+  })
 });
 
 app.delete("/api/delete/pessoas/:id", async (req, res) => {
   const id = req.params.id;
   const sqlDelete = "DELETE FROM pessoas where id = ?";
   db.query(sqlDelete, id, (err, result) => {
-    console.log(err);
-
-    res.json({ message: "Registro Apagado com Sucesso!" });
+    if (err) {
+      res.json({ message: "Usuario possui contas pendentes!" });
+    } else {
+      res.json({ message: "Registro Apagado com Sucesso!" });
+    }
   });
 });
-
 app.delete("/api/delete/contas/:cod_conta", async (req, res) => {
   const cod_conta = req.params.cod_conta;
   const sqlDelete = "DELETE FROM financeiro where cod_conta = ?";
   db.query(sqlDelete, cod_conta, (err, result) => {
-    console.log(err);
+    if (err) {
+      res.json({ message: "Operação invalida!" });
+      console.log(err);
+    } else {
+      res.json({ message: "Dados deletados com Sucesso!" });
+    }
   });
 });
 
@@ -164,16 +214,12 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/pesquisa/pessoas", async (req, res) => {
   const cnpj_cpf = req.body.cnpj_cpf;
   const sqlSelect =
-    "SELECT id, cnpj_cpf, nome, tipo_pessoa, email, cep, contato, dataDeCadastro  FROM pessoas WHERE cnpj_cpf = ? ";
+    "SELECT id, cnpj_cpf, nome, tipo_pessoa, email, cep, contato,tipo_cliente, dataDeCadastro  FROM pessoas WHERE cnpj_cpf = ? ";
   db.query(sqlSelect, cnpj_cpf, (err, result) => {
-    console.log(result);
-    console.log(cnpj_cpf);
-    console.log(err);
     if (err) {
-      res.json({ message: "Pesquisa Invalida!", err });
-    } else {
-      res.json({ message: "Pesquisa Realizada com Sucesso!" });
+      console.log(err);
     }
+    res.send(result);
   });
 });
 

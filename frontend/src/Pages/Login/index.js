@@ -58,7 +58,7 @@ function Login() {
             class="fadeIn fourth "
             value="Logar"
           />
-          <div>
+          <div className="mensagem-login">
             <p>{mensagem}</p>
           </div>
         </div>

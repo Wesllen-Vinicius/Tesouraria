@@ -5,6 +5,7 @@ import CadastroCliente from "../src/Pages/CadastroCliente/index";
 import CadastroTitulo from "../src/Pages/CadastroTitulo/index";
 import Relatorios from "../src/Pages/Relatorios/index";
 import Login from "../src/Pages/Login/index";
+import UpdatePessoas from "../src/Componentes/UpdatePessoas/index";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route exact path="/CadastroCliente" component={CadastroCliente} />
       <Route exact path="/CadastroTitulo" component={CadastroTitulo} />
       <Route exact path="/Relatorios" component={Relatorios} />
+      <Route exact path="/UpdatePessoas" component={UpdatePessoas} />
     </Router>
   );
 }

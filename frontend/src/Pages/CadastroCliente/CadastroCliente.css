@@ -79,3 +79,27 @@ tbody tr {
   padding: 10px;
   margin: 6px;
 }
+.mensagem {
+  display: flex;
+  justify-content: flex-end;
+}
+.mensagem p {
+  color: firebrick;
+  width: 350px;
+  font-size: 20px;
+  border-radius: 8px;
+
+  font-weight: 900;
+}
+.mensagem-cadastro p {
+  color: green;
+  font-weight: 900;
+
+  width: 350px;
+  font-size: 20px;
+  border-radius: 8px;
+}
+.mensagem-cadastro {
+  display: flex;
+  justify-content: flex-end;
+}

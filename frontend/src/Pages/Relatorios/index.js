@@ -57,10 +57,10 @@ function Relatorios() {
             </button>
           </div>
         </div>
-        <div className="table-responsive" id="sailorTableArea">
+        <div className="table-responsive relatorio-table" id="sailorTableArea">
           <table
             id="sailorTable"
-            className="table table-striped table-bordered"
+            className="table  table-striped table-bordered"
             width="100%"
           >
             <thead>
