@@ -4,7 +4,6 @@ import Axios from "axios";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
-import InputMask from "react-input-mask";
 
 function Relatorios() {
   const [relatorio, setRelatorio] = useState([]);
@@ -33,8 +32,8 @@ function Relatorios() {
     <div id="app">
       <Header />
       <Menu />
-      <div className="content">
-        <div className="row py-3 pesquisa">
+      <div className="content formulario">
+        <div className="row py-2 pesquisa">
           <div className="col-2">
             <label>Data inicial</label>
             <input

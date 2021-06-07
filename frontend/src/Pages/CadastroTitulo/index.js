@@ -16,6 +16,7 @@ function CadastroTitulo() {
   const [quant_parcelas, setParcelas] = useState("");
   const [tipo_negocio, setTipo_negocio] = useState("");
   const [menssagem, setMenssagem] = useState("");
+  const [pesquisa, setPesquisa] = useState("");
 
   const [listtitulos, setListTitulos] = useState([]);
 
@@ -36,6 +37,18 @@ function CadastroTitulo() {
         setMenssagem(err.data.message);
       });
   };
+  function Pesquisa() {
+    if (pesquisa === "") {
+      setMenssagem("campo de pesquisa vazio");
+    } else {
+      Axios.post("http://localhost:3001/api/pesquisa/financeiro", {
+        cod_pessoa: pesquisa,
+      }).then(response => {
+        setListTitulos(response.data);
+        console.log(response.data);
+      });
+    }
+  }
 
   const cadastrar = () => {
     Axios.post("http://localhost:3001/api/financeiro", {
@@ -58,8 +71,8 @@ function CadastroTitulo() {
     <div id="app">
       <Header />
       <Menu />
-      <div className="content">
-        <div className="row formulario">
+      <div className="content formulario">
+        <div className="row ">
           <div className="col-6">
             <label>Tipo da conta</label>
             <select
@@ -175,6 +188,21 @@ function CadastroTitulo() {
           </button>
         </div>
 
+        <div className="col-6">
+          <div>
+            <label>Conta da Conta</label>
+            <InputMask
+              type="text"
+              className="form-control"
+              onChange={e => setPesquisa(e.target.value)}
+            />
+          </div>
+          <div>
+            <button className="btn btn-primary my-2 " onClick={Pesquisa}>
+              Pesquisar
+            </button>
+          </div>
+        </div>
         <div className=" mensagem mb-3">
           <p className=" text-center">{menssagem}</p>
         </div>
@@ -194,7 +222,7 @@ function CadastroTitulo() {
                 <th>Quantidade parcelas</th>
                 <th>Vencimento</th>
                 <th>Pagamento</th>
-                <th className="acoes">ações</th>
+                <th className="acoes">Ações</th>
               </tr>
             </thead>
 

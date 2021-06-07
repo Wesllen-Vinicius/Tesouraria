@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./CadastroCliente.css";
 import Axios from "axios";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
 import InputMask from "react-input-mask";
-import { Link } from "react-router-dom";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { FaUserEdit } from "react-icons/fa";
 
-function CadastroCliente() {
+function UpdatePessoas() {
   const [nome, setNome] = useState("");
   const [cnpj_cpf, setCnpj_cpf] = useState("");
   const [bairro, setBairro] = useState("");
@@ -18,18 +18,11 @@ function CadastroCliente() {
   const [email, setEmail] = useState("");
   const [tipo_cliente, setTipo_cliente] = useState("");
   const [listPessoas, setListPessoas] = useState([]);
-
   const [Mensagem, setMensagem] = useState("");
   const [MensagemCadastro, setMensagemCadastro] = useState("");
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/api/pessoas").then(response => {
-      setListPessoas(response.data);
-    });
-  }, []);
-
-  const cadastrar = () => {
-    Axios.post("http://localhost:3001/api/pessoas", {
+  const [pesquisa, setPesquisa] = useState("");
+  function AtualizarDados(id) {
+    Axios.put(`http://localhost:3001/api/update/pessoas/${id}`, {
       nome: nome,
       bairro: bairro,
       cep: cep,
@@ -39,29 +32,54 @@ function CadastroCliente() {
       contato: contato,
       tipo_cliente: tipo_cliente,
       email: email,
-      dataDeCadastro: new Date().toLocaleDateString("pt-BR"),
-    })
-      .then(response => {
-        setMensagemCadastro(response.data.message);
-      })
-      .catch(err => {
-        setMensagem(err.data.message);
-      });
-  };
+    }).then(response => {
+      setMensagem(response.data.message);
+    });
+  }
 
+  useEffect(() => {
+    Axios.get("http://localhost:3001/api/pessoas").then(response => {
+      setListPessoas(response.data);
+    });
+  }, []);
+
+  function Pesquisa() {
+    if (pesquisa === "") {
+      setMensagem("campo de pesquisa vazio");
+    } else {
+      Axios.post("http://localhost:3001/api/pesquisa/pessoas", {
+        cnpj_cpf: pesquisa,
+      }).then(response => {
+        setListPessoas(response.data);
+      });
+    }
+  }
+
+  const Deletar = id => {
+    Axios.delete(`http://localhost:3001/api/delete/pessoas/${id}`).then(
+      response => {
+        if (response.data.message === "Usuario possui contas pendentes!") {
+          setMensagem(response.data.message);
+        } else {
+          setMensagemCadastro(response.data.message);
+        }
+      }
+    );
+  };
   return (
     <div id="app">
       <Header />
       <Menu />
 
-      <div className="content formulario">
-        <div className="row ">
+      <div className="content">
+        <div className="row formulario">
           <div className="col-6">
             <label>Tipo de pessoas</label>
             <select
               className="form-control"
               onChange={e => setTipo_pessoa(e.target.value)}
               aria-label="Default select example"
+              value={tipo_pessoa}
             >
               <option selected value="">
                 Tipo de Pessoa
@@ -90,6 +108,7 @@ function CadastroCliente() {
                 type="text"
                 className="form-control "
                 onChange={e => setCnpj_cpf(e.target.value)}
+                value={cnpj_cpf}
               />
 
               <label>Nome</label>
@@ -97,6 +116,7 @@ function CadastroCliente() {
                 type="text"
                 className="form-control "
                 onChange={e => setNome(e.target.value)}
+                value={nome}
               />
             </div>
           ) : null}
@@ -108,6 +128,7 @@ function CadastroCliente() {
                 type="text"
                 className="form-control "
                 onChange={e => setCnpj_cpf(e.target.value)}
+                value={cnpj_cpf}
               />
 
               <label>Nome Fantasia</label>
@@ -115,6 +136,7 @@ function CadastroCliente() {
                 type="text"
                 className="form-control "
                 onChange={e => setNome(e.target.value)}
+                value={nome}
               />
             </div>
           ) : null}
@@ -126,6 +148,7 @@ function CadastroCliente() {
               type="text"
               className="form-control"
               onChange={e => setCep(e.target.value)}
+              value={cep}
             />
             <label>Contato</label>
             <InputMask
@@ -133,6 +156,7 @@ function CadastroCliente() {
               type="tel"
               className="form-control"
               onChange={e => setContato(e.target.value)}
+              value={contato}
             />
           </div>
           <div className="col-6">
@@ -141,6 +165,7 @@ function CadastroCliente() {
               type="text"
               className="form-control"
               onChange={e => setBairro(e.target.value)}
+              value={bairro}
             />
 
             <label>Número</label>
@@ -148,6 +173,7 @@ function CadastroCliente() {
               type="number"
               className="form-control"
               onChange={e => setNumero(e.target.value)}
+              value={numero}
             />
           </div>
 
@@ -157,24 +183,36 @@ function CadastroCliente() {
               type="email"
               className="form-control"
               onChange={e => setEmail(e.target.value)}
+              value={email}
             />
           </div>
         </div>
 
         <div className="button-cadastrar ">
-          <button onClick={cadastrar}>Cadastrar</button>
+          <button>Atualizar</button>
         </div>
-        <div className="row col-12">
-          <div className=" mensagem col-6 mt-4">
+        <div className="row">
+          <div className="col-6 ">
+            <div>
+              <label>CPF/CNPJ</label>
+              <InputMask
+                type="text"
+                className="form-control"
+                onChange={e => setPesquisa(e.target.value)}
+              />
+            </div>
+            <div>
+              <button className="btn btn-primary my-2 " onClick={Pesquisa}>
+                Pesquisar
+              </button>
+            </div>
+          </div>
+          <div className="col-6"></div>
+          <div className=" mensagem col-12 ">
             <p className=" text-center">{Mensagem}</p>
           </div>
           <div className=" mensagem-cadastro col-12">
             <p className=" text-center">{MensagemCadastro}</p>
-            <div className="btn-atualizar">
-              <Link className="btn btn-primary mb-2" to="/updatePessoas">
-                Gerenciar Cadastros
-              </Link>
-            </div>
           </div>
         </div>
 
@@ -194,6 +232,7 @@ function CadastroCliente() {
                 <th className="">CEP</th>
                 <th>Contato</th>
                 <th>Data de Cadastro</th>
+                <th className="">Ações</th>
               </tr>
             </thead>
 
@@ -209,6 +248,26 @@ function CadastroCliente() {
                     <td className="">{val.cep}</td>
                     <td>{val.contato}</td>
                     <td>{val.dataDeCadastro}</td>
+                    <th>
+                      <div className="col-12 btn-acoes">
+                        <button
+                          onClick={() => {
+                            AtualizarDados(val.id);
+                          }}
+                          className="btn btn-primary "
+                        >
+                          <FaUserEdit size={25} />
+                        </button>
+                        <button
+                          className="btn btn-danger "
+                          onClick={() => {
+                            Deletar(val.id);
+                          }}
+                        >
+                          <RiDeleteBinLine size={25} />
+                        </button>
+                      </div>
+                    </th>
                   </tr>
                 );
               })}
@@ -220,4 +279,4 @@ function CadastroCliente() {
     </div>
   );
 }
-export default CadastroCliente;
+export default UpdatePessoas;

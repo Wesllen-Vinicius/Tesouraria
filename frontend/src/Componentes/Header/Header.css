@@ -2,7 +2,7 @@
   grid-area: header;
   background: linear-gradient(to left, #483d8b, #1e469a);
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   border-bottom: 1px solid lightgray;
   color: white;

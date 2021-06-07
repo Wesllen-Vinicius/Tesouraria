@@ -1,8 +1,7 @@
 .formulario {
-  padding: 10px;
-  flex-direction: row;
-  border: 1px solid lightgray;
   margin-bottom: 10px;
+ 
+  padding: 10px;
 }
 
 #sailorTableArea {
@@ -79,28 +78,28 @@ tbody tr {
   padding: 10px;
   margin: 6px;
 }
-.mensagem{
+.mensagem {
   display: flex;
   justify-content: flex-end;
 }
-.mensagem p{
-  color: white;
-  background-color: firebrick;
+.mensagem p {
+  color: firebrick;
   width: 350px;
   font-size: 20px;
   border-radius: 8px;
-  height: 38px;
- 
+
+  font-weight: 900;
 }
-.mensagem-cadastro p{
-  color: white;
-  background-color: green;
+.mensagem-cadastro p {
+  color: green;
+  font-weight: 900;
+  padding: 0;
   width: 350px;
   font-size: 20px;
   border-radius: 8px;
-  height: 38px;
 }
-.mensagem-cadastro{
+.mensagem-cadastro {
   display: flex;
   justify-content: flex-end;
+  padding: 0;
 }
