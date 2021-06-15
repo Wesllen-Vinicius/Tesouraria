@@ -82,6 +82,7 @@ app.post("/api/financeiro", async (req, res) => {
       } else {
         res.json({ message: "Cadastro realizado com sucesso!" });
       }
+      console.log(err);
     }
   );
 });
@@ -93,7 +94,7 @@ app.get("/api/pessoas", async (req, res) => {
   });
 });
 
-app.get("/api/pessoas/:id", async (req, res) => {
+app.post("/api/pessoas/:id", async (req, res) => {
   const id = req.params.id;
   const sqlSelect = "SELECT * FROM pessoas WHERE id = ? ";
   db.query(sqlSelect, id, (err, result) => {
@@ -161,6 +162,26 @@ app.put("/api/update/pessoas/:id", (req, res) => {
       }
     }
   );
+});
+
+app.put("/api/update/financeiro/:cod_conta", (req, res) => {
+  const cod_conta = req.params.cod_conta;
+  const data_pagamento = req.body.data_pagamento;
+  const sqlUpdate =
+    "UPDATE financeiro SET data_pagamento = ? WHERE cod_conta = ? ";
+  db.query(sqlUpdate, [data_pagamento, cod_conta], (err, result) => {
+    if (data_pagamento == "" || cod_conta == "") {
+      res.json({ message: "Dados incorretos ou faltando!" });
+    }
+    if (err) {
+      res.json({
+        message:
+          "Algo deu Errado! Confirme se esta pessoa possui Contas/Registros Pendentes!!",
+      });
+    } else {
+      res.json({ message: "Dados Atualizados com Sucesso!!" });
+    }
+  });
 });
 
 app.delete("/api/delete/pessoas/:id", async (req, res) => {

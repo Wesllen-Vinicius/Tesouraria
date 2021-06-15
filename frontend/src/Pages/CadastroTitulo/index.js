@@ -28,14 +28,12 @@ function CadastroTitulo() {
     });
   }, []);
 
-  const Deletar = cod_conta => {
-    Axios.delete(`http://localhost:3001/api/delete/contas/${cod_conta}`)
-      .then(response => {
-        setMenssagem(response.data.message);
-      })
-      .catch(err => {
-        setMenssagem(err.data.message);
-      });
+  const atualizandoData = cod_conta => {
+    Axios.put(`http://localhost:3001/api/update/financeiro/${cod_conta}`, {
+      data_pagamento: pagamento,
+    }).then(response => {
+      setMenssagem(response.data.message);
+    });
   };
   function Pesquisa() {
     if (pesquisa === "") {
@@ -241,10 +239,10 @@ function CadastroTitulo() {
                     <th className="acoes">
                       <div>
                         <button
-                          className="btn btn-danger"
                           onClick={() => {
-                            Deletar(val.cod_conta);
+                            atualizandoData(val.cod_conta);
                           }}
+                          className="btn btn-danger"
                         >
                           <RiDeleteBinLine size={20} />
                         </button>

@@ -21,6 +21,7 @@ function UpdatePessoas() {
   const [Mensagem, setMensagem] = useState("");
   const [MensagemCadastro, setMensagemCadastro] = useState("");
   const [pesquisa, setPesquisa] = useState("");
+  const [listPessoas2, setListPessoas2] = useState([]);
   function AtualizarDados(id) {
     Axios.put(`http://localhost:3001/api/update/pessoas/${id}`, {
       nome: nome,
@@ -34,6 +35,27 @@ function UpdatePessoas() {
       email: email,
     }).then(response => {
       setMensagem(response.data.message);
+    });
+  }
+  function PuxarDados(id) {
+    Axios.post(`http://localhost:3001/api/pessoas/${id}`, {
+      id: id,
+    }).then(response => {
+      setListPessoas2(response.data);
+
+      listPessoas2.map(val => {
+        return (
+          setCep(val.cep),
+          setTipo_cliente(val.tipo_cliente),
+          setTipo_pessoa(val.tipo_pessoa),
+          setNumero(val.numero),
+          setNome(val.nome),
+          setBairro(val.bairro),
+          setCnpj_cpf(val.cnpj_cpf),
+          setContato(val.contato),
+          setEmail(val.email)
+        );
+      });
     });
   }
 
@@ -71,27 +93,26 @@ function UpdatePessoas() {
       <Header />
       <Menu />
 
-      <div className="content">
-        <div className="row formulario">
+      <div className="content formulario">
+        <div className="row ">
           <div className="col-6">
             <label>Tipo de pessoas</label>
             <select
               className="form-control"
               onChange={e => setTipo_pessoa(e.target.value)}
-              aria-label="Default select example"
               value={tipo_pessoa}
             >
               <option selected value="">
                 Tipo de Pessoa
               </option>
-              <option value="fisica">Pessoa Física</option>
-              <option value="juridica">Pessoa juridica</option>
+              <option value="Fisica">Pessoa Física</option>
+              <option value="Juridica">Pessoa juridica</option>
             </select>
             <label>Tipo de Cliente</label>
             <select
               className="form-control"
               onChange={e => setTipo_cliente(e.target.value)}
-              aria-label="Default select example"
+              value={tipo_cliente}
             >
               <option selected value="">
                 Tipo de Cliente
@@ -100,7 +121,7 @@ function UpdatePessoas() {
               <option value="Fornecedor">Fornecedor</option>
             </select>
           </div>
-          {tipo_pessoa === "fisica" ? (
+          {tipo_pessoa === "Fisica" ? (
             <div className="col-6">
               <label>CPF</label>
               <InputMask
@@ -120,7 +141,7 @@ function UpdatePessoas() {
               />
             </div>
           ) : null}
-          {tipo_pessoa === "juridica" ? (
+          {tipo_pessoa === "Juridica" ? (
             <div className="col-6">
               <label>CNPJ</label>
               <InputMask
@@ -189,7 +210,17 @@ function UpdatePessoas() {
         </div>
 
         <div className="button-cadastrar ">
-          <button>Atualizar</button>
+          {listPessoas2.map(val => {
+            return (
+              <button
+                onClick={() => {
+                  AtualizarDados(val.id);
+                }}
+              >
+                Atualizar
+              </button>
+            );
+          })}
         </div>
         <div className="row">
           <div className="col-6 ">
@@ -230,6 +261,8 @@ function UpdatePessoas() {
                 <th className="">Tipo</th>
                 <th className="">Email</th>
                 <th className="">CEP</th>
+                <th>Bairro</th>
+                <th>numero</th>
                 <th>Contato</th>
                 <th>Data de Cadastro</th>
                 <th className="">Ações</th>
@@ -246,13 +279,15 @@ function UpdatePessoas() {
                     <td className="">{val.tipo_cliente}</td>
                     <td className="">{val.email}</td>
                     <td className="">{val.cep}</td>
+                    <td>{val.bairro}</td>
+                    <td>{val.numero}</td>
                     <td>{val.contato}</td>
                     <td>{val.dataDeCadastro}</td>
                     <th>
                       <div className="col-12 btn-acoes">
                         <button
                           onClick={() => {
-                            AtualizarDados(val.id);
+                            PuxarDados(val.id);
                           }}
                           className="btn btn-primary "
                         >
