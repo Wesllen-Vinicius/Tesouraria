@@ -211,15 +211,17 @@ app.post("/api/relatorios/mensal", async (req, res) => {
   const data = req.body.data;
   const data2 = req.body.data2;
   const sqlSelect =
-    "SELECT  pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_negocio, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE data_vencimento BETWEEN ? AND ?";
+    "SELECT  financeiro.cod_pessoa, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_negocio, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM  financeiro WHERE data_vencimento BETWEEN ? AND ?";
   db.query(sqlSelect, [data, data2], (err, result) => {
     res.send(result);
+    console.log(data);
+    console.log(data2);
   });
 });
 
 app.get("/api/relatorios", async (req, res) => {
   const sqlSelect =
-    "SELECT pessoas.nome, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_negocio, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE financeiro.cod_pessoa = pessoas.cnpj_cpf";
+    "SELECT financeiro.cod_pessoa, financeiro.valor_titulo,financeiro.tipo_conta, financeiro.tipo_negocio, financeiro.data_vencimento, financeiro.data_pagamento, financeiro.quant_parcelas FROM pessoas, financeiro WHERE financeiro.cod_pessoa = pessoas.cnpj_cpf";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });

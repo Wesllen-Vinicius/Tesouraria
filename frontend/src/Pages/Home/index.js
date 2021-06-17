@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
 import Axios from "axios";
+import { useSelector } from "react-redux";
 import "./home.css";
 function Home() {
   const [listContasAvencer, setListContasAvencer] = useState([]);
+
+  const history = useHistory();
+
   useEffect(() => {
     Axios.get("http://localhost:3001/api/pesquisa/home").then(response => {
       setListContasAvencer(response.data);
@@ -16,6 +21,9 @@ function Home() {
       <Header />
       <Menu />
       <div className="text-center text-danger p-2">
+        {useSelector(state => state.usuarioLogado) === 0
+          ? history.push("/")
+          : null}
         <h2>Contas a vencer</h2>
         <div>
           <div

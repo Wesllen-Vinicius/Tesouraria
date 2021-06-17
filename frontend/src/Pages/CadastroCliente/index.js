@@ -6,6 +6,8 @@ import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
 import InputMask from "react-input-mask";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function CadastroCliente() {
   const [nome, setNome] = useState("");
@@ -18,6 +20,8 @@ function CadastroCliente() {
   const [email, setEmail] = useState("");
   const [tipo_cliente, setTipo_cliente] = useState("");
   const [listPessoas, setListPessoas] = useState([]);
+
+  const history = useHistory();
 
   const [Mensagem, setMensagem] = useState("");
   const [MensagemCadastro, setMensagemCadastro] = useState("");
@@ -55,6 +59,9 @@ function CadastroCliente() {
       <Menu />
 
       <div className="content formulario">
+        {useSelector(state => state.usuarioLogado) === 0
+          ? history.push("/")
+          : null}
         <div className="row ">
           <div className="col-6">
             <label>Tipo de pessoas</label>

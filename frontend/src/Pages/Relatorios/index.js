@@ -4,11 +4,14 @@ import Axios from "axios";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
-
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 function Relatorios() {
   const [relatorio, setRelatorio] = useState([]);
   const [mesPesquisa, setMesPesquisa] = useState("");
   const [anoMensal, setAnoMensal] = useState("");
+
+  const history = useHistory();
 
   useEffect(() => {
     Axios.get("http://localhost:3001/api/relatorios").then(response => {
@@ -33,6 +36,9 @@ function Relatorios() {
       <Header />
       <Menu />
       <div className="content formulario">
+        {useSelector(state => state.usuarioLogado) === 0
+          ? history.push("/")
+          : null}
         <div className="row py-2 pesquisa">
           <div className="col-2">
             <label>Data inicial</label>
@@ -64,7 +70,7 @@ function Relatorios() {
           >
             <thead>
               <tr>
-                <th className="">Nome</th>
+                <th className="">Codigo pessoa</th>
                 <th className="">Valor titulo</th>
                 <th className="">Tipo de Conta</th>
                 <th className="">Descrição</th>
@@ -76,7 +82,7 @@ function Relatorios() {
               return (
                 <tbody>
                   <tr>
-                    <td className="">{val.nome}</td>
+                    <td className="">{val.cod_pessoa}</td>
                     <td className="">R$ {val.valor_titulo.toFixed(2)}</td>
                     <td className="">{val.tipo_conta}</td>
                     <td className="">{val.tipo_negocio}</td>

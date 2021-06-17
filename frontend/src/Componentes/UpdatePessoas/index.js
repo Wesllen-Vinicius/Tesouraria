@@ -6,6 +6,8 @@ import Menu from "../../Componentes/Menu/index";
 import InputMask from "react-input-mask";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaUserEdit } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function UpdatePessoas() {
   const [nome, setNome] = useState("");
@@ -22,6 +24,9 @@ function UpdatePessoas() {
   const [MensagemCadastro, setMensagemCadastro] = useState("");
   const [pesquisa, setPesquisa] = useState("");
   const [listPessoas2, setListPessoas2] = useState([]);
+
+  const history = useHistory();
+
   function AtualizarDados(id) {
     Axios.put(`http://localhost:3001/api/update/pessoas/${id}`, {
       nome: nome,
@@ -94,6 +99,9 @@ function UpdatePessoas() {
       <Menu />
 
       <div className="content formulario">
+        {useSelector(state => state.usuarioLogado) === 0
+          ? history.push("/")
+          : null}
         <div className="row ">
           <div className="col-6">
             <label>Tipo de pessoas</label>

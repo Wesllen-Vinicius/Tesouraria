@@ -4,8 +4,10 @@ import Axios from "axios";
 import Footer from "../../Componentes/Footer/index";
 import Header from "../../Componentes/Header/index";
 import Menu from "../../Componentes/Menu/index";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { AiFillEdit } from "react-icons/ai";
 import InputMask from "react-input-mask";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function CadastroTitulo() {
   const [valor, setValor] = useState("");
@@ -17,6 +19,8 @@ function CadastroTitulo() {
   const [tipo_negocio, setTipo_negocio] = useState("");
   const [menssagem, setMenssagem] = useState("");
   const [pesquisa, setPesquisa] = useState("");
+
+  const history = useHistory();
 
   const [listtitulos, setListTitulos] = useState([]);
 
@@ -70,6 +74,9 @@ function CadastroTitulo() {
       <Header />
       <Menu />
       <div className="content formulario">
+        {useSelector(state => state.usuarioLogado) === 0
+          ? history.push("/")
+          : null}
         <div className="row ">
           <div className="col-6">
             <label>Tipo da conta</label>
@@ -165,7 +172,8 @@ function CadastroTitulo() {
           <div className="col-6">
             <label>Vencimento</label>
             <InputMask
-              type="date"
+              mask="9999/99/99"
+              type="text"
               className="form-control "
               onChange={e => setVencimento(e.target.value)}
             />
@@ -173,7 +181,8 @@ function CadastroTitulo() {
           <div className="col-12">
             <label>Pagamento</label>
             <InputMask
-              type="date"
+              mask="9999/99/99"
+              type="text"
               className="form-control"
               onChange={e => setPagamento(e.target.value)}
             />
@@ -242,9 +251,9 @@ function CadastroTitulo() {
                           onClick={() => {
                             atualizandoData(val.cod_conta);
                           }}
-                          className="btn btn-danger"
+                          className="btn btn-primary"
                         >
-                          <RiDeleteBinLine size={20} />
+                          <AiFillEdit size={20} />
                         </button>
                       </div>
                     </th>

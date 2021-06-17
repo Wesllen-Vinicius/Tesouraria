@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { HiFingerPrint } from "react-icons/hi";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import "./login.css";
 import Axios from "axios";
 function Login() {
@@ -8,6 +9,7 @@ function Login() {
   const [senha, setSenha] = useState("");
   const [mensagem, setMensagem] = useState("");
   const history = useHistory();
+  const dispatch = useDispatch();
   function logar() {
     if (email === "" || senha === "") {
       setMensagem("Usuário/senha não informados!!");
@@ -18,6 +20,10 @@ function Login() {
       }).then(response => {
         setMensagem(response.data.message);
         if (response.data.message === "Logado!") {
+          dispatch({
+            type: "LOG_IN",
+            usuarioName: email,
+          });
           history.push("/Home");
         }
       });
@@ -26,6 +32,9 @@ function Login() {
 
   return (
     <div class="wrapper fadeInDown">
+      {useSelector(state => state.usuarioLogado) > 0
+        ? history.push("/Home")
+        : null}
       <div id="formContent">
         <div class="fadeIn first">
           <div>
